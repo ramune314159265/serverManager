@@ -1,0 +1,28 @@
+{
+  "name": "servermanager",
+  "version": "1.0.0",
+  "description": "serverManager",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:start": "ts-node src/index.ts",
+    "start": "tsc && node build/index.js",
+    "lint": "eslint src",
+    "fix": "eslint src --fix"
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.11.22",
+    "@types/websocket": "^1.0.10",
+    "@types/ws": "^8.5.10",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "websocket": "^1.0.34"
+  }
+}
