@@ -1,0 +1,10 @@
+import { serverData } from '../server/interfaces'
+
+export const serverList: Array<serverData> = [
+	{
+		id: 'test',
+		type: 'other',
+		machineId: 'test',
+		attributes: {}
+	}
+]
