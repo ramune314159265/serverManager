@@ -1,7 +1,11 @@
 import express from 'express'
-import { machineRouter } from './v1/machine'
-import { serverRouter } from './v1/server'
+import expressWs from 'express-ws'
 
 export const app = express()
+expressWs(app)
+
+const machineRouter = (await import('./v1/machine')).machineRouter
+const serverRouter = (await import('./v1/server/index')).serverRouter
+
 app.use('/api/v1/machines', machineRouter)
 app.use('/api/v1/servers', serverRouter)

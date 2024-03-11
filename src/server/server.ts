@@ -64,7 +64,7 @@ export class Server extends EventEmitter {
 			serverId: this.id
 		}))
 	}
-	writeConsole(content) {
+	writeConsole(content: string) {
 		if (!this.isOnline) {
 			throw new Error('サーバーはオフラインです')
 		}
