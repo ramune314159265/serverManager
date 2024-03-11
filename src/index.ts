@@ -10,7 +10,7 @@ wsServer.on('connection', (wsConnection) => {
 	wsConnection.on('error', console.error)
 
 	wsConnection.on('message', (message) => {
-		console.log(message)
+		console.log(message.toString())
 
 		const data = JSON.parse(message.toString())
 		if (data.type === 'machine_info_send') {
