@@ -51,5 +51,9 @@ export class Server {
 		if (!this.machine.isOnline) {
 			throw new Error('マシンはオフラインです')
 		}
+		this.machine.connection?.send(JSON.stringify({
+			type: 'server_stop',
+			serverId: this.id
+		}))
 	}
 }
