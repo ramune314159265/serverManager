@@ -3,12 +3,12 @@ import { Machine } from '../machine'
 import { receivedData, serverData } from './interfaces'
 
 export class Server {
+	static list: { [key: string]: Server } = {}
 	static {
 		serverList.forEach((serverData: serverData) => {
 			Server.list[serverData.id] = new Server(serverData)
 		})
 	}
-	static list: { [key: string]: Server } = {}
 
 	id: string
 	attributes: object
