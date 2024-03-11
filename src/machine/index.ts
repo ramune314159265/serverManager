@@ -30,5 +30,9 @@ export class Machine {
 			const Server = await (await import('../server/server')).Server
 			Server.list[data.serverId].dataReceived(data)
 		})
+
+		connection.on('close', () => {
+			this.connection = null
+		})
 	}
 }
