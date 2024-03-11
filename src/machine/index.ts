@@ -1,4 +1,5 @@
 import { machineList } from '../config/machinelist'
+import { Server } from '../server/server'
 import { machineData } from './interfaces'
 import WebSocket from 'ws'
 
@@ -21,5 +22,13 @@ export class Machine {
 	}
 	setWsConnection(connection: WebSocket) {
 		this.connection = connection
+
+		connection.on('message', message => {
+			const data = JSON.parse(message.toString())
+			if(!data.serverId){
+				return
+			}
+			Server.list[data.serverId].dataReceived(data)
+		})
 	}
 }
