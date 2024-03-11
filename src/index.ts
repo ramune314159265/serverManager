@@ -1,7 +1,8 @@
-import WebSocket from 'ws'
+import { WebSocketServer } from 'ws'
 import { Machine } from './machine'
+import { app } from './api'
 
-const wsServer = new WebSocket.Server({
+const wsServer = new WebSocketServer({
 	port: 8000,
 })
 
@@ -17,3 +18,5 @@ wsServer.on('connection', (wsConnection) => {
 		}
 	})
 })
+
+app.listen(9000)

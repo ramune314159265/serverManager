@@ -1,15 +1,14 @@
 import { machineList } from '../config/machinelist'
-import { Server } from '../server/server'
 import { machineData } from './interfaces'
 import WebSocket from 'ws'
 
 export class Machine {
+	static list: { [key: string]: Machine } = {}
 	static {
 		machineList.forEach((machineData: machineData) => {
 			Machine.list[machineData.id] = new Machine(machineData)
 		})
 	}
-	static list: { [key: string]: Machine } = {}
 
 	id: string
 	connection: WebSocket | null
@@ -23,11 +22,12 @@ export class Machine {
 	setWsConnection(connection: WebSocket) {
 		this.connection = connection
 
-		connection.on('message', message => {
+		connection.on('message', async message => {
 			const data = JSON.parse(message.toString())
-			if(!data.serverId){
+			if (!data.serverId) {
 				return
 			}
+			const Server = await (await import('../server/server')).Server
 			Server.list[data.serverId].dataReceived(data)
 		})
 	}
