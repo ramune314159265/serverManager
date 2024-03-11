@@ -1,5 +1,5 @@
 import express from 'express'
-import { Machine } from '../machine'
+import { Machine } from '../../machine'
 
 export const machineRouter = express.Router()
 
