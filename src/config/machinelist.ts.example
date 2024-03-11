@@ -1,0 +1,8 @@
+import { machineData } from '../machine/interfaces'
+
+export const machineList: Array<machineData> = [
+	{
+		id: "test",
+		name: 'Test Machine'
+	}
+]
