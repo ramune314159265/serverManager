@@ -1,8 +1,9 @@
+import EventEmitter from 'node:events'
 import { serverList } from '../config/serverlist'
 import { Machine } from '../machine'
 import { receivedData, serverData } from './interfaces'
 
-export class Server {
+export class Server extends EventEmitter {
 	static list: { [key: string]: Server } = {}
 	static {
 		serverList.forEach((serverData: serverData) => {
@@ -16,6 +17,7 @@ export class Server {
 	isOnline: boolean
 	consoleBuffer: string
 	constructor(serverData: serverData) {
+		super()
 		this.id = serverData.id
 		this.attributes = serverData.attributes
 		this.machine = Machine.list[serverData.machineId]
@@ -26,12 +28,18 @@ export class Server {
 		switch (data.type) {
 			case 'server_started':
 				this.isOnline = true
+				this.emit('start')
 				break
 			case 'server_stopped':
 				this.isOnline = false
+				this.emit('stop')
 				break
 			case 'server_stdout':
+				if (!(typeof data.content === 'string')) {
+					return
+				}
 				this.consoleBuffer += data.content
+				this.emit('stdout', data.content)
 				break
 
 			default:
@@ -48,12 +56,21 @@ export class Server {
 		}))
 	}
 	stop() {
-		if (!this.machine.isOnline) {
-			throw new Error('マシンはオフラインです')
+		if (!this.isOnline) {
+			throw new Error('サーバーはオフラインです')
 		}
 		this.machine.connection?.send(JSON.stringify({
 			type: 'server_stop',
 			serverId: this.id
+		}))
+	}
+	writeConsole(content) {
+		if (!this.isOnline) {
+			throw new Error('サーバーはオフラインです')
+		}
+		this.machine.connection?.send(JSON.stringify({
+			type: 'server_write_stdin',
+			content
 		}))
 	}
 }
