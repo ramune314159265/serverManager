@@ -1,7 +1,9 @@
 import express from 'express'
 import expressWs from 'express-ws'
+import cors from 'cors'
 
 export const app = express()
+app.use(cors())
 expressWs(app)
 
 const machineRouter = (await import('./v1/machine')).machineRouter
