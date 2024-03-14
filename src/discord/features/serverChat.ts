@@ -128,7 +128,7 @@ minecraftWsServer.on('connection', wsConnection => {
 					const IMEHandled = (await (await fetch(`https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${encodeURIComponent(toHiragana)}`)).json())
 						.map((i: string) => i[1][0])
 						.join('')
-					const contentToSendMinecraft = `[<green>Minecraft</green> | ${data.playerId}<gray>@${servers[data.serverId].name}</gray>] ${data.content} <reset><gold>(${IMEHandled})</gold>`
+					const contentToSendMinecraft = `[<green>Minecraft</green> | <hover:show_text:'クリックしてプライベートメッセージコマンドを補完'><click:suggest_command:/tell ${data.playerId} >${data.playerId}<gray>@${servers[data.serverId].name}</gray></click></hover>] ${data.content} <reset><gold>(${IMEHandled})</gold>`
 					const contentToSendDiscord = `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} (${IMEHandled})`
 					wsConnection.send(JSON.stringify({
 						type: 'send_chat',
@@ -160,7 +160,7 @@ client.on(Events.MessageCreate, message => {
 	if (message.author.bot || message.author.system) {
 		return
 	}
-	const contentToSendMinecraft = `[<aqua>Discord</aqua> | <${message.member?.displayHexColor ?? 'white'}>${message.author.displayName}</${message.member?.displayHexColor ?? 'white'}>] <reset>${markdownToMinimessage(message.content)}`
+	const contentToSendMinecraft = `[<aqua>Discord</aqua> | <${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.author.username}'>${message.author.displayName}</hover></${message.member?.displayHexColor ?? 'white'}>] <reset>${markdownToMinimessage(message.content)}`
 	minecraftWsServer.clients.forEach(wsConnection => {
 		wsConnection.send(JSON.stringify({
 			type: 'send_chat',
