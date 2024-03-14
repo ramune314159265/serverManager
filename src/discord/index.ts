@@ -30,7 +30,9 @@ export const client = new Client({
 	},
 })
 
-import('./events/index')
+Promise.all([
+	import('./events/index')
+])
 	.then(() => {
 		client.login(discordBotConfig.token)
 	})

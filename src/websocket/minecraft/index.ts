@@ -3,7 +3,7 @@ import { servers } from '../../server'
 import { MinecraftServer } from '../../server/minecraft'
 
 export const minecraftWsServer = new WebSocketServer({
-	port: 8000,
+	port: 8001,
 })
 
 minecraftWsServer.on('connection', (wsConnection) => {
