@@ -2,7 +2,8 @@ import EventEmitter from 'node:events'
 import { Machine } from '../../machine'
 import { receivedData, serverData } from '../interfaces'
 
-export class Server extends EventEmitter {	id: string
+export class Server extends EventEmitter {
+	id: string
 	attributes: object
 	machine: Machine
 	isOnline: boolean
