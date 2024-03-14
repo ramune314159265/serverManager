@@ -6,7 +6,7 @@ export const app = express()
 app.use(cors())
 expressWs(app)
 
-const machineRouter = (await import('./v1/machine')).machineRouter
+const machineRouter = (await import('./v1/machine/index')).machineRouter
 const serverRouter = (await import('./v1/server/index')).serverRouter
 
 app.use('/api/v1/machines', machineRouter)
