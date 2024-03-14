@@ -162,6 +162,9 @@ client.on(Events.MessageCreate, message => {
 	if (message.author.bot && /^\[Minecraft \| (.+?)\]/.test(message.content)) {
 		return
 	}
+	if(message.content === ''){
+		return
+	}
 	const contentToSendMinecraft = `[<aqua>Discord</aqua> | <${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.author.username}'>${message.author.displayName}</hover></${message.member?.displayHexColor ?? 'white'}>] <reset>${minimessageNormalizer(message.content)}`
 	minecraftWsServer.clients.forEach(wsConnection => {
 		wsConnection.send(JSON.stringify({
