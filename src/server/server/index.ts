@@ -1,7 +1,7 @@
 import EventEmitter from 'node:events'
-import { serverList } from '../config/serverlist'
-import { Machine } from '../machine'
-import { receivedData, serverData } from './interfaces'
+import { serverList } from '../../config/serverlist'
+import { Machine } from '../../machine'
+import { receivedData, serverData } from '../interfaces'
 
 export class Server extends EventEmitter {
 	static list: { [key: string]: Server } = {}
