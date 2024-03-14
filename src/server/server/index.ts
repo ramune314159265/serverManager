@@ -1,17 +1,8 @@
 import EventEmitter from 'node:events'
-import { serverList } from '../../config/serverlist'
 import { Machine } from '../../machine'
 import { receivedData, serverData } from '../interfaces'
 
-export class Server extends EventEmitter {
-	static list: { [key: string]: Server } = {}
-	static {
-		serverList.forEach((serverData: serverData) => {
-			Server.list[serverData.id] = new Server(serverData)
-		})
-	}
-
-	id: string
+export class Server extends EventEmitter {	id: string
 	attributes: object
 	machine: Machine
 	isOnline: boolean
