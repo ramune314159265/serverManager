@@ -4,6 +4,7 @@ import { receivedData, serverData } from '../interfaces'
 
 export class Server extends EventEmitter {
 	id: string
+	name: string
 	attributes: object
 	machine: Machine
 	isOnline: boolean
@@ -11,6 +12,7 @@ export class Server extends EventEmitter {
 	constructor(serverData: serverData) {
 		super()
 		this.id = serverData.id
+		this.name = serverData.name
 		this.attributes = serverData.attributes
 		this.machine = Machine.list[serverData.machineId]
 		this.isOnline = false
