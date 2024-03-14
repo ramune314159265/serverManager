@@ -165,7 +165,7 @@ client.on(Events.MessageCreate, message => {
 	if(message.content === ''){
 		return
 	}
-	const contentToSendMinecraft = `[<aqua>Discord</aqua> | <${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.author.username}'>${message.author.displayName}</hover></${message.member?.displayHexColor ?? 'white'}>] <reset>${minimessageNormalizer(message.content)}`
+	const contentToSendMinecraft = `[<color:#5865F2>Discord</color> | <${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.author.username}'>${message.author.displayName}</hover></${message.member?.displayHexColor ?? 'white'}>] <reset>${minimessageNormalizer(message.content)}`
 	minecraftWsServer.clients.forEach(wsConnection => {
 		wsConnection.send(JSON.stringify({
 			type: 'send_chat',
