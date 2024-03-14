@@ -5,7 +5,7 @@ import { client } from '..'
 import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import { minecraftWsServer } from '../../websocket/minecraft'
-import { minimessageNormalizer } from '../../util/minimessage'
+import { URLToMinimessage, minimessageNormalizer } from '../../util/minimessage'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
 if (noticeChannel === undefined) {
@@ -127,7 +127,7 @@ minecraftWsServer.on('connection', wsConnection => {
 					const IMEHandled = (await (await fetch(`https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${encodeURIComponent(toHiragana)}`)).json())
 						.map((i: string) => i[1][0])
 						.join('')
-					const contentToSendMinecraft = `[<green>Minecraft</green> | <hover:show_text:'クリックしてプライベートメッセージコマンドを補完'><click:suggest_command:/tell ${data.playerId} >${data.playerId}<gray>@${servers[data.serverId].name}</gray></click></hover>] ${data.content} <reset><gold>(${IMEHandled})</gold>`
+					const contentToSendMinecraft = `[<green>Minecraft</green> | <hover:show_text:'クリックしてプライベートメッセージコマンドを補完'><click:suggest_command:/tell ${data.playerId} >${data.playerId}<gray>@${servers[data.serverId].name}</gray></click></hover>] ${URLToMinimessage(data.content)} <reset><gold>(${URLToMinimessage(IMEHandled)})</gold>`
 					const contentToSendDiscord = `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} (${IMEHandled})`
 					wsConnection.send(JSON.stringify({
 						type: 'send_chat',
@@ -135,7 +135,7 @@ minecraftWsServer.on('connection', wsConnection => {
 					}))
 					noticeChannel.send(contentToSendDiscord)
 				} catch (e) {
-					const contentToSendMinecraft = `[<green>Minecraft</green> | ${data.playerId}<gray>@${servers[data.serverId].name}</gray>] ${data.content} <reset><red>(エラー)</red>`
+					const contentToSendMinecraft = `[<green>Minecraft</green> | ${data.playerId}<gray>@${servers[data.serverId].name}</gray>] ${URLToMinimessage(data.content)} <reset><red>(エラー)</red>`
 					const contentToSendDiscord = `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} (エラー)`
 					wsConnection.send(JSON.stringify({
 						type: 'send_chat',
