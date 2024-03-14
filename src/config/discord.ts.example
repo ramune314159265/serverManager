@@ -1,4 +1,12 @@
 export const discordBotConfig = {
 	token: '',
-	noticeChannelId: ''
+	noticeChannelId: '',
+	colors: {
+		join: '#81f542',
+		move: '#4287f5',
+		leave: '#f54242',
+		death: '#171717',
+		normalAdvancement: '#d5de2c',
+		challengeAdvancement: '#c036eb'
+	}
 }
