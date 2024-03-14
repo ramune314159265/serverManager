@@ -1,9 +1,10 @@
 import { ColorResolvable, EmbedBuilder, Events } from 'discord.js'
+import romajiConv from '@koozaki/romaji-conv'
+
 import { client } from '..'
 import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import { minecraftWsServer } from '../../websocket/minecraft'
-import romajiConv from '@koozaki/romaji-conv'
 import { markdownToMinimessage } from '../../util/markdown'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
