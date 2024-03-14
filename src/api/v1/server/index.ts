@@ -10,7 +10,7 @@ serverRouter.get('/', (req, res) => {
 	for (const server of Object.values(servers)) {
 		sendData.push({
 			id: server.id,
-			online: server.isOnline
+			status: server.status
 		})
 	}
 
@@ -29,7 +29,7 @@ serverRouter.get('/:serverId/start', (req, res) => {
 			content: 'machine offline'
 		}))
 	}
-	if (server.isOnline) {
+	if (server.status !== 'offline') {
 		return res.status(400).send(JSON.stringify({
 			content: 'already started'
 		}))
@@ -53,7 +53,7 @@ serverRouter.get('/:serverId/stop', (req, res) => {
 			content: 'machine offline'
 		}))
 	}
-	if (!server.isOnline) {
+	if (server.status === 'offline') {
 		return res.status(400).send(JSON.stringify({
 			content: 'server has stopped'
 		}))

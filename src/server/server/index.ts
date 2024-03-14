@@ -5,27 +5,29 @@ import { receivedData, serverAttributes, serverData } from '../interfaces'
 export class Server extends EventEmitter {
 	id: string
 	name: string
+	type: string
 	attributes: serverAttributes
 	machine: Machine
-	isOnline: boolean
+	status: string
 	consoleBuffer: string
 	constructor(serverData: serverData) {
 		super()
 		this.id = serverData.id
 		this.name = serverData.name
+		this.type = serverData.type
 		this.attributes = serverData.attributes
 		this.machine = Machine.list[serverData.machineId]
-		this.isOnline = false
+		this.status = 'offline'
 		this.consoleBuffer = ''
 	}
 	dataReceived(data: receivedData) {
 		switch (data.type) {
 			case 'server_started':
-				this.isOnline = true
+				this.status = this.type === 'common' ? 'online' : 'booting'
 				this.emit('start')
 				break
 			case 'server_stopped':
-				this.isOnline = false
+				this.status = 'offline'
 				this.emit('stop')
 				break
 			case 'server_stdout':
@@ -50,7 +52,7 @@ export class Server extends EventEmitter {
 		}))
 	}
 	stop() {
-		if (!this.isOnline) {
+		if (!this.status) {
 			throw new Error('サーバーはオフラインです')
 		}
 		this.machine.connection?.send(JSON.stringify({
@@ -59,7 +61,7 @@ export class Server extends EventEmitter {
 		}))
 	}
 	writeConsole(content: string) {
-		if (!this.isOnline) {
+		if (!this.status) {
 			throw new Error('サーバーはオフラインです')
 		}
 		this.machine.connection?.send(JSON.stringify({

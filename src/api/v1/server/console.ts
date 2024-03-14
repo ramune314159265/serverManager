@@ -15,7 +15,7 @@ consoleRouter.get('/:serverId/console/history/', (req, res) => {
 			content: 'machine offline'
 		}))
 	}
-	if (!server.isOnline) {
+	if (server.status === 'offline') {
 		return res.status(400).send(JSON.stringify({
 			content: 'server offline'
 		}))
@@ -40,7 +40,7 @@ consoleRouter.ws('/:serverId/console/ws/', (ws, req) => {
 		}))
 		return ws.close()
 	}
-	if (!server.isOnline) {
+	if (server.status === 'offline') {
 		ws.send(JSON.stringify({
 			content: 'server offline'
 		}))

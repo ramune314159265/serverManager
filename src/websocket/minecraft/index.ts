@@ -21,6 +21,12 @@ minecraftWsServer.on('connection', (wsConnection) => {
 			case 'player_disconnected':
 				(servers[data.previousJoinedServerId] as MinecraftServer).players.disconnect(data.playerId)
 				break
+			case 'server_started':
+				(servers[data.serverId] as MinecraftServer).status = 'online'
+				break
+			case 'server_stopped':
+				(servers[data.serverId] as MinecraftServer).status = 'booting'
+				break
 
 			default:
 				break
