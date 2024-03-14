@@ -1,11 +1,11 @@
 import EventEmitter from 'node:events'
 import { Machine } from '../../machine'
-import { receivedData, serverData } from '../interfaces'
+import { receivedData, serverAttributes, serverData } from '../interfaces'
 
 export class Server extends EventEmitter {
 	id: string
 	name: string
-	attributes: object
+	attributes: serverAttributes
 	machine: Machine
 	isOnline: boolean
 	consoleBuffer: string

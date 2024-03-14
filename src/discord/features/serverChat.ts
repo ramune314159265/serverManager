@@ -20,15 +20,24 @@ minecraftWsServer.on('connection', wsConnection => {
 		console.log(message.toString())
 		switch (data.type) {
 			case 'server_started':
+				if (!servers[data.serverId].attributes.notice?.start) {
+					return
+				}
 				noticeChannel.send(`✅ **${servers[data.serverId].name}** が起動しました`)
 				break
 			case 'server_stopped':
+				if (!servers[data.serverId].attributes.notice?.stop) {
+					return
+				}
 				noticeChannel.send({
 					content: `🛑 **${servers[data.serverId].name}** が停止しました`,
 					flags: [4096] //https://stackoverflow.com/questions/76517603/how-to-send-a-silent-message-with-discord-js
 				})
 				break
 			case 'player_connected': {
+				if (!servers[data.joinedServerId].attributes.notice?.joinLeave) {
+					return
+				}
 				const embed = new EmbedBuilder()
 				embed.setAuthor({
 					name: servers[data.joinedServerId].name,
@@ -43,6 +52,9 @@ minecraftWsServer.on('connection', wsConnection => {
 				break
 			}
 			case 'player_moved': {
+				if (!servers[data.joinedServerId].attributes.notice?.joinLeave) {
+					return
+				}
 				const embed = new EmbedBuilder()
 				embed.setAuthor({
 					name: servers[data.joinedServerId].name,
@@ -57,6 +69,9 @@ minecraftWsServer.on('connection', wsConnection => {
 				break
 			}
 			case 'player_disconnected': {
+				if (!servers[data.previousJoinedServerId].attributes.notice?.joinLeave) {
+					return
+				}
 				const embed = new EmbedBuilder()
 				embed.setAuthor({
 					name: servers[data.previousJoinedServerId].name,
@@ -71,6 +86,9 @@ minecraftWsServer.on('connection', wsConnection => {
 				break
 			}
 			case 'player_died': {
+				if (!servers[data.serverId].attributes.notice?.death) {
+					return
+				}
 				const embed = new EmbedBuilder()
 				embed.setAuthor({
 					name: servers[data.serverId].name,
@@ -86,6 +104,9 @@ minecraftWsServer.on('connection', wsConnection => {
 				break
 			}
 			case 'player_advancement_done': {
+				if (!servers[data.serverId].attributes.notice?.advancement) {
+					return
+				}
 				const embed = new EmbedBuilder()
 				embed.setAuthor({
 					name: servers[data.serverId].name,
