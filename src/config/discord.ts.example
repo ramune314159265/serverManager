@@ -1,3 +1,20 @@
+import { ColorResolvable } from 'discord.js'
+
+interface colors {
+	join: ColorResolvable;
+	move: ColorResolvable;
+	leave: ColorResolvable;
+	death: ColorResolvable;
+	normalAdvancement: ColorResolvable;
+	challengeAdvancement: ColorResolvable;
+}
+
+interface config {
+	token: string,
+	noticeChannelId: string,
+	colors: colors
+}
+
 export const discordBotConfig = {
 	token: '',
 	noticeChannelId: '',
