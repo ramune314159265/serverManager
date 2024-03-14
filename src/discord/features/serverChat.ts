@@ -1,8 +1,9 @@
-import { ColorResolvable, EmbedBuilder } from 'discord.js'
+import { ColorResolvable, EmbedBuilder, Events } from 'discord.js'
 import { client } from '..'
 import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import { minecraftWsServer } from '../../websocket/minecraft'
+import romajiConv from '@koozaki/romaji-conv'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
 if (noticeChannel === undefined) {
@@ -13,7 +14,7 @@ if (!noticeChannel.isTextBased()) {
 }
 
 minecraftWsServer.on('connection', wsConnection => {
-	wsConnection.on('message', message => {
+	wsConnection.on('message', async message => {
 		const data = JSON.parse(message.toString())
 		console.log(data)
 		switch (data.type) {
@@ -98,9 +99,39 @@ minecraftWsServer.on('connection', wsConnection => {
 				})
 				break
 			}
+			case 'player_chatted': {
+				const toHiragana = romajiConv(data.content).toHiragana()
+				const IMEHandled = (await (await fetch(`https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${toHiragana}`)).json())
+					.map((i: string) => i[1][0])
+					.join('')
+				const contentToSendMinecraft = `[<green>Minecraft</green> | ${data.playerId}<gray>@${data.serverId}</gray>] ${data.content} <reset><gold>(${IMEHandled})</gold>`
+				const contentToSendDiscord = `[Minecraft | ${data.playerId}@${data.serverId}] ${data.content} (${IMEHandled})`
+				wsConnection.send(JSON.stringify({
+					type: 'send_chat',
+					content: contentToSendMinecraft
+				}))
+				noticeChannel.send(contentToSendDiscord)
+				break
+			}
 
 			default:
 				break
 		}
+	})
+})
+
+client.on(Events.MessageCreate, message => {
+	if (message.channelId !== discordBotConfig.noticeChannelId) {
+		return
+	}
+	if(message.author.bot || message.author.system){
+		return
+	}
+	const contentToSendMinecraft = `[<aqua>Discord</aqua> | <${message.member?.displayHexColor ?? 'white'}>${message.author.displayName}</${message.member?.displayHexColor ?? 'white'}>] <reset>${message.content}`
+	minecraftWsServer.clients.forEach(wsConnection => {
+		wsConnection.send(JSON.stringify({
+			type: 'send_chat',
+			content: contentToSendMinecraft
+		}))
 	})
 })
