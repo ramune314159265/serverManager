@@ -4,6 +4,7 @@ import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import { minecraftWsServer } from '../../websocket/minecraft'
 import romajiConv from '@koozaki/romaji-conv'
+import { markdownToMinimessage } from '../../util/markdown'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
 if (noticeChannel === undefined) {
@@ -16,7 +17,7 @@ if (!noticeChannel.isTextBased()) {
 minecraftWsServer.on('connection', wsConnection => {
 	wsConnection.on('message', async message => {
 		const data = JSON.parse(message.toString())
-		console.log(data)
+		console.log(message.toString())
 		switch (data.type) {
 			case 'server_started':
 				noticeChannel.send(`✅ **${servers[data.serverId].name}** が起動しました`)
@@ -100,17 +101,27 @@ minecraftWsServer.on('connection', wsConnection => {
 				break
 			}
 			case 'player_chatted': {
-				const toHiragana = romajiConv(data.content).toHiragana()
-				const IMEHandled = (await (await fetch(`https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${toHiragana}`)).json())
-					.map((i: string) => i[1][0])
-					.join('')
-				const contentToSendMinecraft = `[<green>Minecraft</green> | ${data.playerId}<gray>@${data.serverId}</gray>] ${data.content} <reset><gold>(${IMEHandled})</gold>`
-				const contentToSendDiscord = `[Minecraft | ${data.playerId}@${data.serverId}] ${data.content} (${IMEHandled})`
-				wsConnection.send(JSON.stringify({
-					type: 'send_chat',
-					content: contentToSendMinecraft
-				}))
-				noticeChannel.send(contentToSendDiscord)
+				try {
+					const toHiragana = romajiConv(data.content).toHiragana()
+					const IMEHandled = (await (await fetch(`https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${encodeURIComponent(toHiragana)}`)).json())
+						.map((i: string) => i[1][0])
+						.join('')
+					const contentToSendMinecraft = `[<green>Minecraft</green> | ${data.playerId}<gray>@${servers[data.serverId].name}</gray>] ${data.content} <reset><gold>(${IMEHandled})</gold>`
+					const contentToSendDiscord = `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} (${IMEHandled})`
+					wsConnection.send(JSON.stringify({
+						type: 'send_chat',
+						content: contentToSendMinecraft
+					}))
+					noticeChannel.send(contentToSendDiscord)
+				} catch (e) {
+					const contentToSendMinecraft = `[<green>Minecraft</green> | ${data.playerId}<gray>@${servers[data.serverId].name}</gray>] ${data.content} <reset><red>(エラー)</red>`
+					const contentToSendDiscord = `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} (エラー)`
+					wsConnection.send(JSON.stringify({
+						type: 'send_chat',
+						content: contentToSendMinecraft
+					}))
+					noticeChannel.send(contentToSendDiscord)
+				}
 				break
 			}
 
@@ -124,10 +135,10 @@ client.on(Events.MessageCreate, message => {
 	if (message.channelId !== discordBotConfig.noticeChannelId) {
 		return
 	}
-	if(message.author.bot || message.author.system){
+	if (message.author.bot || message.author.system) {
 		return
 	}
-	const contentToSendMinecraft = `[<aqua>Discord</aqua> | <${message.member?.displayHexColor ?? 'white'}>${message.author.displayName}</${message.member?.displayHexColor ?? 'white'}>] <reset>${message.content}`
+	const contentToSendMinecraft = `[<aqua>Discord</aqua> | <${message.member?.displayHexColor ?? 'white'}>${message.author.displayName}</${message.member?.displayHexColor ?? 'white'}>] <reset>${markdownToMinimessage(message.content)}`
 	minecraftWsServer.clients.forEach(wsConnection => {
 		wsConnection.send(JSON.stringify({
 			type: 'send_chat',
