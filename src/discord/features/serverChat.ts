@@ -66,6 +66,12 @@ minecraftWsServer.on('connection', wsConnection => {
 				noticeChannel.send({
 					embeds: [embed]
 				})
+				minecraftWsServer.clients.forEach(wsConnection => {
+					wsConnection.send(JSON.stringify({
+						type: 'send_chat',
+						content: `<aqua>${data.playerId}さんが${servers[data.joinedServerId].name}サーバーに参加しました`
+					}))
+				})
 				break
 			}
 			case 'player_disconnected': {
@@ -156,13 +162,13 @@ client.on(Events.MessageCreate, message => {
 	if (message.channelId !== discordBotConfig.noticeChannelId) {
 		return
 	}
-	if(message.author.system){
+	if (message.author.system) {
 		return
 	}
 	if (message.author.bot && /^\[Minecraft \| (.+?)\]/.test(message.content)) {
 		return
 	}
-	if(message.content === ''){
+	if (message.content === '') {
 		return
 	}
 	const contentToSendMinecraft = `[<color:#5865F2>Discord</color> | <${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.author.username}'>${message.author.displayName}</hover></${message.member?.displayHexColor ?? 'white'}>] <reset>${minimessageNormalizer(message.content)}`
