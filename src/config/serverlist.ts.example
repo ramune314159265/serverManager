@@ -2,6 +2,7 @@ import { serverData } from '../server/interfaces'
 
 export const serverList: Array<serverData> = [
 	{
+		name:'Test Server',
 		id: 'test',
 		type: 'common',
 		machineId: 'test',

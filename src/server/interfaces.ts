@@ -1,4 +1,5 @@
 export interface serverData {
+	name: string,
 	id: string,
 	type: string,
 	machineId: string,
