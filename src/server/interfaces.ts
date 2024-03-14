@@ -1,5 +1,6 @@
 export interface serverAttributes {
 	isStartableFromDiscord: boolean,
+	startMention?: boolean,
 	notice?: {
 		start: boolean,
 		stop: boolean,

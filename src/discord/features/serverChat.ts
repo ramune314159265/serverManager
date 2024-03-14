@@ -1,4 +1,4 @@
-import { ColorResolvable, EmbedBuilder, Events } from 'discord.js'
+import { ColorResolvable, EmbedBuilder, Events, roleMention } from 'discord.js'
 import romajiConv from '@koozaki/romaji-conv'
 
 import { client } from '..'
@@ -23,7 +23,7 @@ minecraftWsServer.on('connection', wsConnection => {
 				if (!servers[data.serverId].attributes.notice?.start) {
 					return
 				}
-				noticeChannel.send(`✅ **${servers[data.serverId].name}** が起動しました`)
+				noticeChannel.send(`${servers[data.serverId].attributes.startMention === true ? roleMention(discordBotConfig.mentionRoleId) : ''}✅ **${servers[data.serverId].name}** が起動しました`)
 				break
 			case 'server_stopped':
 				if (!servers[data.serverId].attributes.notice?.stop) {

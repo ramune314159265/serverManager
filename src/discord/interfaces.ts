@@ -12,5 +12,6 @@ export interface colors {
 export interface config {
 	token: string,
 	noticeChannelId: string,
+	mentionRoleId: string,
 	colors: colors
 }
