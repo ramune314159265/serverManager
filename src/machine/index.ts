@@ -1,4 +1,5 @@
 import { machineList } from '../config/machinelist'
+import { servers } from '../server'
 import { machineData } from './interfaces'
 import WebSocket from 'ws'
 
@@ -27,8 +28,7 @@ export class Machine {
 			if (!data.serverId) {
 				return
 			}
-			const Server = await (await import('../server/server')).Server
-			Server.list[data.serverId].dataReceived(data)
+			servers[data.serverId].dataReceived(data)
 		})
 
 		connection.on('close', () => {
