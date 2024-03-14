@@ -18,7 +18,6 @@ if (!noticeChannel.isTextBased()) {
 minecraftWsServer.on('connection', wsConnection => {
 	wsConnection.on('message', async message => {
 		const data = JSON.parse(message.toString())
-		console.log(message.toString())
 		switch (data.type) {
 			case 'server_started':
 				if (!servers[data.serverId].attributes.notice?.start) {
