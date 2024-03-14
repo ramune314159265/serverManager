@@ -5,7 +5,7 @@ import { client } from '..'
 import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import { minecraftWsServer } from '../../websocket/minecraft'
-import { markdownToMinimessage } from '../../util/minimessage'
+import { minimessageNormalizer } from '../../util/minimessage'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
 if (noticeChannel === undefined) {
@@ -162,7 +162,7 @@ client.on(Events.MessageCreate, message => {
 	if (message.author.bot && /^\[Minecraft \| (.+?)\]/.test(message.content)) {
 		return
 	}
-	const contentToSendMinecraft = `[<aqua>Discord</aqua> | <${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.author.username}'>${message.author.displayName}</hover></${message.member?.displayHexColor ?? 'white'}>] <reset>${markdownToMinimessage(message.content)}`
+	const contentToSendMinecraft = `[<aqua>Discord</aqua> | <${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.author.username}'>${message.author.displayName}</hover></${message.member?.displayHexColor ?? 'white'}>] <reset>${minimessageNormalizer(message.content)}`
 	minecraftWsServer.clients.forEach(wsConnection => {
 		wsConnection.send(JSON.stringify({
 			type: 'send_chat',
