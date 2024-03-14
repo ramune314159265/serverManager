@@ -1,15 +1,15 @@
 import express from 'express'
-import { Server } from '../../../server/server'
+import { servers } from '../../../server'
 
 export const consoleRouter = express.Router()
 
 consoleRouter.get('/:serverId/console/history/', (req, res) => {
-	if (!Object.hasOwn(Server.list, req.params.serverId)) {
+	if (!Object.hasOwn(servers, req.params.serverId)) {
 		return res.status(404).send(JSON.stringify({
 			content: 'not found'
 		}))
 	}
-	const server = Server.list[req.params.serverId]
+	const server = servers[req.params.serverId]
 	if (!server.machine.isOnline) {
 		return res.status(500).send(JSON.stringify({
 			content: 'machine offline'
@@ -27,13 +27,13 @@ consoleRouter.get('/:serverId/console/history/', (req, res) => {
 })
 
 consoleRouter.ws('/:serverId/console/ws/', (ws, req) => {
-	if (!Object.hasOwn(Server.list, req.params.serverId)) {
+	if (!Object.hasOwn(servers, req.params.serverId)) {
 		ws.send(JSON.stringify({
 			content: 'not found'
 		}))
 		return ws.close()
 	}
-	const server = Server.list[req.params.serverId]
+	const server = servers[req.params.serverId]
 	if (!server.machine.isOnline) {
 		ws.send(JSON.stringify({
 			content: 'machine offline'
