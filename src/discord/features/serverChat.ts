@@ -5,7 +5,7 @@ import { client } from '..'
 import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import { minecraftWsServer } from '../../websocket/minecraft'
-import { markdownToMinimessage } from '../../util/markdown'
+import { markdownToMinimessage } from '../../util/minimessage'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
 if (noticeChannel === undefined) {
