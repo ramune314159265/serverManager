@@ -54,6 +54,17 @@ consoleRouter.ws('/:serverId/console/ws/', (ws, req) => {
 		}))
 	}
 	server.on('stdout', stdoutHandle)
+	ws.on('message', message => {
+		const data = JSON.parse(message.toString())
+		switch (data.type) {
+			case 'write_stdin': {
+				if (typeof data.content !== 'string') {
+					return
+				}
+				server.writeConsole(data.content)
+			}
+		}
+	})
 	ws.on('close', () => {
 		server.removeListener('stdout', stdoutHandle)
 	})
