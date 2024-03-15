@@ -33,3 +33,7 @@ minecraftWsServer.on('connection', (wsConnection) => {
 		}
 	})
 })
+
+minecraftWsServer.on('listening', () => {
+	console.log('ws for minecraftServer listening')
+})

@@ -61,6 +61,7 @@ consoleRouter.ws('/:serverId/console/ws/', (ws, req) => {
 				if (typeof data.content !== 'string') {
 					return
 				}
+				console.log(data.content)
 				server.writeConsole(data.content)
 			}
 		}

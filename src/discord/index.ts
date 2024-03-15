@@ -30,6 +30,8 @@ export const client = new Client({
 	},
 })
 
+console.log('connecting discord...')
+
 Promise.all([
 	import('./events/index')
 ])

@@ -17,3 +17,7 @@ childWsServer.on('connection', (wsConnection) => {
 		}
 	})
 })
+
+childWsServer.on('listening', () => {
+	console.log('ws for child listening')
+})
