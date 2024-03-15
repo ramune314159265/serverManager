@@ -24,6 +24,12 @@ minecraftWsServer.on('connection', wsConnection => {
 					return
 				}
 				noticeChannel.send(`${servers[data.serverId].attributes.startMention === true ? roleMention(discordBotConfig.mentionRoleId) : ''}✅ **${servers[data.serverId].name}** が起動しました`)
+				minecraftWsServer.clients.forEach(wsConnection => {
+					wsConnection.send(JSON.stringify({
+						type: 'send_chat',
+						content: `<aqua><bold>${servers[data.serverId].name}</bold>が起動しました`
+					}))
+				})
 				break
 			case 'server_stopped':
 				if (!servers[data.serverId].attributes.notice?.stop) {
@@ -32,6 +38,12 @@ minecraftWsServer.on('connection', wsConnection => {
 				noticeChannel.send({
 					content: `🛑 **${servers[data.serverId].name}** が停止しました`,
 					flags: [4096] //https://stackoverflow.com/questions/76517603/how-to-send-a-silent-message-with-discord-js
+				})
+				minecraftWsServer.clients.forEach(wsConnection => {
+					wsConnection.send(JSON.stringify({
+						type: 'send_chat',
+						content: `<aqua><bold>${servers[data.serverId].name}</bold>が停止しました`
+					}))
 				})
 				break
 			case 'player_connected': {
@@ -52,7 +64,7 @@ minecraftWsServer.on('connection', wsConnection => {
 				minecraftWsServer.clients.forEach(wsConnection => {
 					wsConnection.send(JSON.stringify({
 						type: 'send_chat',
-						content: `<aqua>${data.playerId}さんが${servers[data.joinedServerId].name}サーバーに参加しました`
+						content: `<aqua>${data.playerId}さんが<bold>${servers[data.joinedServerId].name}</bold>に参加しました`
 					}))
 				})
 				break
@@ -75,7 +87,7 @@ minecraftWsServer.on('connection', wsConnection => {
 				minecraftWsServer.clients.forEach(wsConnection => {
 					wsConnection.send(JSON.stringify({
 						type: 'send_chat',
-						content: `<aqua>${data.playerId}さんが${servers[data.joinedServerId].name}サーバーに参加しました`
+						content: `<aqua>${data.playerId}さんが<bold>${servers[data.joinedServerId].name}</bold>に参加しました`
 					}))
 				})
 				break
@@ -171,7 +183,7 @@ client.on(Events.MessageCreate, async message => {
 	if (message.author.system) {
 		return
 	}
-	if (message.author.bot && /^\[Minecraft \| (.+?)\]/.test(message.content)) {
+	if (message.author.bot && message.author.id === client.user?.id) {
 		return
 	}
 	if (message.content === '') {
