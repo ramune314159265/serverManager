@@ -66,6 +66,7 @@ export class Server extends EventEmitter {
 		}
 		this.machine.connection?.send(JSON.stringify({
 			type: 'server_write_stdin',
+			serverId: this.id,
 			content
 		}))
 	}
