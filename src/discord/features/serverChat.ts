@@ -158,7 +158,7 @@ minecraftWsServer.on('connection', wsConnection => {
 	})
 })
 
-client.on(Events.MessageCreate, message => {
+client.on(Events.MessageCreate, async message => {
 	if (message.channelId !== discordBotConfig.noticeChannelId) {
 		return
 	}
@@ -171,7 +171,8 @@ client.on(Events.MessageCreate, message => {
 	if (message.content === '') {
 		return
 	}
-	const contentToSendMinecraft = `[<color:#5865F2>Discord</color> | ${discordUserNameNormalizer(message)}] <reset>${minimessageNormalizer(message.content)}`
+	const repliedMessage = message.reference?.messageId ? await message.channel.messages.fetch(message.reference?.messageId) : null
+	const contentToSendMinecraft = `[<color:#5865F2>Discord</color> | ${discordUserNameNormalizer(message)}${repliedMessage ? `(${discordUserNameNormalizer(repliedMessage)}に返信)` : ''}] <reset>${minimessageNormalizer(message.content)}`
 	minecraftWsServer.clients.forEach(wsConnection => {
 		wsConnection.send(JSON.stringify({
 			type: 'send_chat',
