@@ -24,11 +24,11 @@ export class Server extends EventEmitter {
 		switch (data.type) {
 			case 'server_started':
 				this.status = this.type === 'common' ? 'online' : 'booting'
-				this.emit('start')
+				this.emit('processStart')
 				break
 			case 'server_stopped':
 				this.status = 'offline'
-				this.emit('stop')
+				this.emit('processStop')
 				break
 			case 'server_stdout':
 				if (!(typeof data.content === 'string')) {
