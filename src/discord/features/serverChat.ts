@@ -49,6 +49,12 @@ minecraftWsServer.on('connection', wsConnection => {
 				noticeChannel.send({
 					embeds: [embed]
 				})
+				minecraftWsServer.clients.forEach(wsConnection => {
+					wsConnection.send(JSON.stringify({
+						type: 'send_chat',
+						content: `<aqua>${data.playerId}さんが${servers[data.joinedServerId].name}サーバーに参加しました`
+					}))
+				})
 				break
 			}
 			case 'player_moved': {
