@@ -2,10 +2,60 @@ import { serverData } from '../server/interfaces'
 
 export const serverList: Array<serverData> = [
 	{
-		name:'Test Server',
+		name: 'Velocity',
+		id: 'proxy',
+		type: 'mc',
+		machineId: 'test',
+		attributes: {
+			isStartableFromDiscord: true,
+		}
+	}, {
+		name: 'テスト1サーバー',
+		id: 's1',
+		type: 'mc',
+		machineId: 'test',
+		attributes: {
+			isStartableFromDiscord: true,
+			notice: {
+				start: true,
+				stop: true,
+				joinLeave: true,
+				advancement: true,
+				death: true
+			},
+			startMention: true
+		}
+	}, {
+		name: 'テスト2サーバー',
+		id: 's2',
+		type: 'mc',
+		machineId: 'test',
+		attributes: {
+			isStartableFromDiscord: true,
+			notice: {
+				start: true,
+				stop: true,
+				joinLeave: false,
+				advancement: false,
+				death: false
+			},
+			startMention: false
+		}
+	}, {
+		name: 'テスト',
 		id: 'test',
 		type: 'common',
 		machineId: 'test',
-		attributes: {}
+		attributes: {
+			isStartableFromDiscord: false,
+			notice: {
+				start: false,
+				stop: false,
+				joinLeave: false,
+				advancement: false,
+				death: false
+			},
+			startMention: false
+		}
 	}
 ]
