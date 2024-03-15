@@ -46,6 +46,9 @@ export class Server extends EventEmitter {
 		if (!this.machine.isOnline) {
 			throw new Error('マシンはオフラインです')
 		}
+		if (this.status !== 'offline') {
+			throw new Error('すでに起動ています')
+		}
 		this.machine.connection?.send(JSON.stringify({
 			type: 'server_start',
 			serverId: this.id
