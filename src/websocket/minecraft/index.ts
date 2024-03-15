@@ -15,7 +15,8 @@ minecraftWsServer.on('connection', (wsConnection) => {
 				(servers[data.serverId] as MinecraftServer).setWsConnection(wsConnection)
 				break
 			case 'player_connected':
-				(servers[data.joinedServerId] as MinecraftServer).players.connect(data.playerId)
+				{ (servers[data.joinedServerId] as MinecraftServer).players.connect(data.playerId) }
+				{ (servers[data.proxyId] as MinecraftServer).players.connect(data.playerId) }
 				break
 			case 'player_moved':
 				{ (servers[data.previousJoinedServerId] as MinecraftServer).players.disconnect(data.playerId) }
@@ -23,6 +24,7 @@ minecraftWsServer.on('connection', (wsConnection) => {
 				break
 			case 'player_disconnected':
 				(servers[data.previousJoinedServerId] as MinecraftServer).players.disconnect(data.playerId)
+				{ (servers[data.proxyId] as MinecraftServer).players.disconnect(data.playerId) }
 				break
 			default:
 				break
