@@ -13,5 +13,9 @@ export interface config {
 	token: string,
 	noticeChannelId: string,
 	mentionRoleId: string,
-	colors: colors
+	colors: colors,
+	addresses: {
+		serverAddress1: string,
+		serverAddress2: string
+	}
 }

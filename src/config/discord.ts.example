@@ -10,5 +10,9 @@ export const discordBotConfig = {
 		death: '#171717',
 		normalAdvancement: '#d5de2c',
 		challengeAdvancement: '#c036eb'
+	},
+	addresses:{
+		serverAddress1:'example.com',
+		serverAddress2:'hot.ssnetwork.io:00000'
 	}
 }

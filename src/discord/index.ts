@@ -32,6 +32,8 @@ export const client = new Client({
 
 console.log('connecting discord...')
 
+export const startAt = new Date()
+
 Promise.all([
 	import('./events/index')
 ])
