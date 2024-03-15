@@ -1,7 +1,8 @@
+import WebSocket from 'ws'
+
 import { machineList } from '../config/machinelist'
 import { servers } from '../server'
 import { machineData } from './interfaces'
-import WebSocket from 'ws'
 
 export class Machine {
 	static list: { [key: string]: Machine } = {}
