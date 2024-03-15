@@ -1,12 +1,7 @@
-import { ActionRowBuilder, CommandInteraction, ComponentEmojiResolvable, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from 'discord.js'
+import { ActionRowBuilder, CommandInteraction, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from 'discord.js'
 import { servers } from '../../../server'
+import { statusEmojis } from '../../../util/server'
 
-const statusEmojis: { [key: string]: ComponentEmojiResolvable } = {
-	offline: '🔴',
-	booting: '🟡',
-	online: '🟢',
-	unknown: '❓'
-}
 
 const returnServersMenuOptions = (): Array<StringSelectMenuOptionBuilder> => {
 	const serversMenuOptions = []
