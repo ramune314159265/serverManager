@@ -55,7 +55,7 @@ export default {
 								.addComponents(select)
 						]
 					})
-					selectMenuInteraction.followUp({
+					await selectMenuInteraction.followUp({
 						content: `${selectedServer.name}を起動中です。これには数分かかります。`,
 						ephemeral: true
 					})
@@ -73,7 +73,7 @@ export default {
 							.addComponents(select)
 					]
 				})
-				selectMenuInteraction.followUp({
+				await selectMenuInteraction.followUp({
 					content: `エラーが発生しました` + e,
 					ephemeral: true
 				})
