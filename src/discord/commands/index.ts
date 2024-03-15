@@ -1,3 +1,3 @@
 export const commandsData = [
-	(await import('./start/index')).default
-]
+	await import('./start/index')
+].map(i => i.default)
