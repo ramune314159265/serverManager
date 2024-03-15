@@ -10,10 +10,24 @@ minecraftWsServer.on('connection', (wsConnection) => {
 	wsConnection.on('error', console.error)
 	wsConnection.on('message', message => {
 		const data = JSON.parse(message.toString())
-		if (data.type !== 'ws_connected') {
-			return
+		switch (data.type) {
+			case 'ws_connected':
+				(servers[data.serverId] as MinecraftServer).setWsConnection(wsConnection)
+				break
+			case 'player_connected':
+				(servers[data.joinedServerId] as MinecraftServer).players.connect(data.playerId)
+				break
+			case 'player_moved':
+				{ (servers[data.previousJoinedServerId] as MinecraftServer).players.disconnect(data.playerId) }
+				{ (servers[data.joinedServerId] as MinecraftServer).players.connect(data.playerId) }
+				break
+			case 'player_disconnected':
+				(servers[data.previousJoinedServerId] as MinecraftServer).players.disconnect(data.playerId)
+				break
+			default:
+				break
 		}
-		(servers[data.serverId] as MinecraftServer).setWsConnection(wsConnection)
+
 	})
 })
 

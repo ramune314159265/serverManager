@@ -23,3 +23,24 @@ export interface receivedData {
 	serverId?: string,
 	content?: string
 }
+
+export interface playerDeadEvent {
+	reason: string,
+	playerId: string,
+}
+
+export interface playerAdvancementDoneEvent {
+	playerId: string,
+	advancement: {
+		type: string,
+		description: string,
+		name: string
+	}
+}
+
+export interface playerChattedEvent {
+	playerId: string
+	proxyId: string,
+	serverId: string,
+	content: string
+}
