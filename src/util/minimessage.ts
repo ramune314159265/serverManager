@@ -1,3 +1,5 @@
+import { Message } from 'discord.js'
+
 export const markdownToMinimessage = (content: string): string => {
 	return content
 		.replace(/\*\*(.+?)\*\*/g, "<bold>$1</bold>")
@@ -15,4 +17,12 @@ export const URLToMinimessage = (content: string): string => {
 
 export const minimessageNormalizer = (content: string): string => {
 	return markdownToMinimessage(URLToMinimessage(content))
+}
+
+export const discordUserNameNormalizer = (message: Message): string => {
+	return `<color:${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.author.username}'>${message.author.displayName}</hover></color>`
+}
+
+export const minecraftUserNameNormalizer = (playerId: string, serverName: string): string => {
+	return `<hover:show_text:'クリックしてプライベートメッセージコマンドを補完'><click:suggest_command:/tell ${playerId} >${playerId}<gray>@${serverName}</gray></click></hover>`
 }
