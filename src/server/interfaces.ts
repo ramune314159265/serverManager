@@ -24,9 +24,32 @@ export interface receivedData {
 	content?: string
 }
 
+export interface playerConnectedEvent {
+	playerId: string,
+	joinedServerId: string,
+	proxyId: string,
+	timestamp: number
+}
+
+export interface playerMovedEvent {
+	playerId: string,
+	joinedServerId: string,
+	previousJoinedServerId: string,
+	proxyId: string,
+	timestamp: number
+}
+
+export interface playerDisconnectedEvent {
+	playerId: string,
+	previousJoinedServerId: string,
+	proxyId: string,
+	timestamp: number
+}
+
 export interface playerDeadEvent {
 	reason: string,
 	playerId: string,
+	timestamp: number
 }
 
 export interface playerAdvancementDoneEvent {
@@ -35,12 +58,14 @@ export interface playerAdvancementDoneEvent {
 		type: string,
 		description: string,
 		name: string
-	}
+	},
+	timestamp: number
 }
 
 export interface playerChattedEvent {
 	playerId: string
 	proxyId: string,
 	serverId: string,
-	content: string
+	content: string,
+	timestamp: number
 }

@@ -1,7 +1,7 @@
 import WebSocket from 'ws'
 
 import { Server } from '../server'
-import { playerAdvancementDoneEvent, playerChattedEvent, playerDeadEvent, serverData } from '../interfaces'
+import { playerAdvancementDoneEvent, playerChattedEvent, playerConnectedEvent, playerDeadEvent, playerDisconnectedEvent, playerMovedEvent, serverData } from '../interfaces'
 import { Players } from './players'
 import { minecraftWsServer } from '../../websocket/minecraft'
 
@@ -33,6 +33,15 @@ export class MinecraftServer extends Server {
 				case 'server_stopped':
 					this.status = 'booting'
 					this.emit('minecraftStopped')
+					break
+				case 'player_connected':
+					this.emit('minecraftPlayerConnected', (data as playerConnectedEvent))
+					break
+				case 'player_moved':
+					this.emit('minecraftPlayerMoved', (data as playerMovedEvent))
+					break
+				case 'player_disconnected':
+					this.emit('minecraftPlayerDisconnected', (data as playerDisconnectedEvent))
 					break
 				case 'player_died':
 					this.emit('minecraftPlayerDied', (data as playerDeadEvent))
