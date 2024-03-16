@@ -58,7 +58,6 @@ export class MinecraftServer extends Server {
 					break
 				case 'every_second_info_send':
 					this.tps = data.tps
-					console.log(data.timestamp - data.lastTickTimestamp)
 					if (data.timestamp - data.lastTickTimestamp <= 30 * 1000) {
 						return
 					}
