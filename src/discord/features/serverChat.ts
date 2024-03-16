@@ -6,7 +6,7 @@ import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import { URLToMinimessage, discordUserNameNormalizer, minecraftUserNameNormalizer, minimessageNormalizer } from '../../util/minimessage'
 import { MinecraftServer } from '../../server/minecraft'
-import { playerAdvancementDoneEvent, playerChattedEvent, playerConnectedEvent, playerDeadEvent, playerDisconnectedEvent, playerMovedEvent } from '../../server/interfaces'
+import { playerAdvancementDoneEvent, playerChattedEvent, playerConnectedEvent, playerDeadEvent, playerDisconnectedEvent, playerMovedEvent, serverHangedEvent } from '../../server/interfaces'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
 if (noticeChannel === undefined) {
@@ -144,6 +144,12 @@ for (const server of Object.values(servers)) {
 			server.sendChat(contentToSendMinecraft)
 			noticeChannel.send(contentToSendDiscord)
 		}
+	})
+
+	server.on('MinecraftServerHanged', async (data: serverHangedEvent) => {
+		noticeChannel.send({
+			content: `‼️${server.name}は${Math.round((data.timestamp - data.lastTickTimestamp) / 1000)}秒以上応答がありません!`
+		})
 	})
 }
 

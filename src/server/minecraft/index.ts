@@ -1,7 +1,7 @@
 import WebSocket from 'ws'
 
 import { Server } from '../server'
-import { playerAdvancementDoneEvent, playerChattedEvent, playerConnectedEvent, playerDeadEvent, playerDisconnectedEvent, playerMovedEvent, serverData } from '../interfaces'
+import { playerAdvancementDoneEvent, playerChattedEvent, playerConnectedEvent, playerDeadEvent, playerDisconnectedEvent, playerMovedEvent, serverData, serverHangedEvent } from '../interfaces'
 import { Players } from './players'
 import { minecraftWsServer } from '../../websocket/minecraft'
 
@@ -16,9 +16,13 @@ export class MinecraftServer extends Server {
 	}
 	players: Players
 	wsConnection?: WebSocket
+	lastHangedTickTimestamp: number
+	tps: number
 	constructor(serverData: serverData) {
 		super(serverData)
 		this.players = new Players()
+		this.lastHangedTickTimestamp = Date.now()
+		this.tps = 20
 	}
 	setWsConnection(connection: WebSocket) {
 		this.wsConnection = connection
@@ -51,6 +55,18 @@ export class MinecraftServer extends Server {
 					break
 				case 'player_chatted':
 					this.emit('minecraftPlayerChatted', (data as playerChattedEvent))
+					break
+				case 'every_second_info_send':
+					this.tps = data.tps
+					console.log(data.timestamp - data.lastTickTimestamp)
+					if (data.timestamp - data.lastTickTimestamp <= 30 * 1000) {
+						return
+					}
+					if(data.lastTickTimestamp === this.lastHangedTickTimestamp){
+						return
+					}
+					this.lastHangedTickTimestamp = data.lastTickTimestamp
+					this.emit('MinecraftServerHanged', (data as serverHangedEvent))
 					break
 				default:
 					break

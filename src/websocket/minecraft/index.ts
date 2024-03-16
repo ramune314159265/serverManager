@@ -9,6 +9,7 @@ export const minecraftWsServer = new WebSocketServer({
 minecraftWsServer.on('connection', (wsConnection) => {
 	wsConnection.on('error', console.error)
 	wsConnection.on('message', message => {
+		console.log(message.toString())
 		const data = JSON.parse(message.toString())
 		switch (data.type) {
 			case 'ws_connected':

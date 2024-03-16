@@ -63,9 +63,15 @@ export interface playerAdvancementDoneEvent {
 }
 
 export interface playerChattedEvent {
-	playerId: string
+	playerId: string,
 	proxyId: string,
 	serverId: string,
 	content: string,
+	timestamp: number
+}
+
+export interface serverHangedEvent {
+	tps: number,
+	lastTickTimestamp: number,
 	timestamp: number
 }
