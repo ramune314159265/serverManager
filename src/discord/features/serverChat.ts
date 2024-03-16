@@ -1,4 +1,4 @@
-import { ColorResolvable, EmbedBuilder, Events, roleMention } from 'discord.js'
+import { ColorResolvable, EmbedBuilder, Events, TimestampStyles, roleMention, time } from 'discord.js'
 import romajiConv from '@koozaki/romaji-conv'
 
 import { client } from '..'
@@ -148,7 +148,7 @@ for (const server of Object.values(servers)) {
 
 	server.on('MinecraftServerHanged', async (data: serverHangedEvent) => {
 		noticeChannel.send({
-			content: `‼️${server.name}は${Math.round((data.timestamp - data.lastTickTimestamp) / 1000)}秒以上応答がありません!`
+			content: `‼️${server.name}は${time(new Date(data.lastTickTimestamp), TimestampStyles.RelativeTime)}以上応答がありません!`
 		})
 	})
 }
