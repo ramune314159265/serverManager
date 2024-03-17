@@ -23,7 +23,8 @@ serverRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					status: server.status,
-					type: server.type
+					type: server.type,
+					attributes: server.attributes
 				})
 				break
 			}
