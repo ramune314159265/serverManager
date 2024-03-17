@@ -22,7 +22,8 @@ serverRouter.get('/', (req, res) => {
 			default: {
 				sendData.push({
 					id: server.id,
-					status: server.status
+					status: server.status,
+					type: server.type
 				})
 				break
 			}
