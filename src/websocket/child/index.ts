@@ -1,8 +1,9 @@
 import { WebSocketServer } from 'ws'
 import { Machine } from '../../machine'
+import { serverConfig } from '../../config/server'
 
 export const childWsServer = new WebSocketServer({
-	port: 8000,
+	port: serverConfig.wsChildPort,
 })
 
 childWsServer.on('connection', (wsConnection) => {
