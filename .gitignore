@@ -5,3 +5,4 @@ build/
 src/config/serverlist.ts
 src/config/machinelist.ts
 src/config/discord.ts
+src/config/server.ts

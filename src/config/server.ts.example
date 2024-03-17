@@ -1,0 +1,11 @@
+interface config {
+	apiPort: number,
+	wsChildPort: number,
+	wsMcServerPort: number
+}
+
+export const serverConfig: config = {
+	apiPort: 25500,
+	wsChildPort: 25501,
+	wsMcServerPort: 25502
+}
