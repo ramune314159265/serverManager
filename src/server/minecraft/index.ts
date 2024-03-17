@@ -22,7 +22,7 @@ export class MinecraftServer extends Server {
 		super(serverData)
 		this.players = new Players()
 		this.lastHangedTickTimestamp = Date.now()
-		this.tps = 20
+		this.tps = 0
 	}
 	setWsConnection(connection: WebSocket) {
 		this.wsConnection = connection
@@ -37,6 +37,7 @@ export class MinecraftServer extends Server {
 				case 'server_stopped':
 					this.status = 'booting'
 					this.emit('minecraftStopped')
+					this.tps = 0
 					break
 				case 'player_connected':
 					this.emit('minecraftPlayerConnected', (data as playerConnectedEvent))
