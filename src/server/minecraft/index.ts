@@ -57,11 +57,11 @@ export class MinecraftServer extends Server {
 					this.emit('minecraftPlayerChatted', (data as playerChattedEvent))
 					break
 				case 'every_second_info_send':
-					this.tps = data.tps
+					this.tps = Math.round(data.tps * 100) / 100
 					if (data.timestamp - data.lastTickTimestamp <= 30 * 1000) {
 						return
 					}
-					if(data.lastTickTimestamp === this.lastHangedTickTimestamp){
+					if (data.lastTickTimestamp === this.lastHangedTickTimestamp) {
 						return
 					}
 					this.lastHangedTickTimestamp = data.lastTickTimestamp
