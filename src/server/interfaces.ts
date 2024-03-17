@@ -4,6 +4,7 @@ export interface serverAttributes {
 	notice?: {
 		start: boolean,
 		stop: boolean,
+		hang: boolean,
 		joinLeave: boolean,
 		advancement: boolean,
 		death: boolean

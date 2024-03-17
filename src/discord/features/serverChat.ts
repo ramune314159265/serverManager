@@ -147,6 +147,9 @@ for (const server of Object.values(servers)) {
 	})
 
 	server.on('MinecraftServerHanged', async (data: serverHangedEvent) => {
+		if (!server.attributes.notice?.hang) {
+			return
+		}
 		noticeChannel.send({
 			content: `‼️ **${server.name}** は${time(new Date(data.lastTickTimestamp), TimestampStyles.RelativeTime)}から応答がありません!`
 		})
