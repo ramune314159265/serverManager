@@ -11,3 +11,5 @@ const serverRouter = (await import('./v1/server/index')).serverRouter
 
 app.use('/api/v1/machines', machineRouter)
 app.use('/api/v1/servers', serverRouter)
+
+app.listen(9000)
