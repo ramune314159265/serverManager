@@ -1,6 +1,7 @@
 import express from 'express'
 import { consoleRouter } from './console'
 import { servers } from '../../../server'
+import { MinecraftServer } from '../../../server/minecraft'
 
 export const serverRouter = express.Router()
 serverRouter.use('/', consoleRouter)
@@ -8,10 +9,24 @@ serverRouter.use('/', consoleRouter)
 serverRouter.get('/', (req, res) => {
 	const sendData = []
 	for (const server of Object.values(servers)) {
-		sendData.push({
-			id: server.id,
-			status: server.status
-		})
+		switch (true) {
+			case server instanceof MinecraftServer: {
+				sendData.push({
+					players: server.players.list,
+					tps: server.tps,
+					id: server.id,
+					status: server.status
+				})
+				break
+			}
+			default: {
+				sendData.push({
+					id: server.id,
+					status: server.status
+				})
+				break
+			}
+		}
 	}
 
 	res.send(JSON.stringify(sendData))
