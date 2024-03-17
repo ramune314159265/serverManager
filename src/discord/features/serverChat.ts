@@ -150,6 +150,7 @@ for (const server of Object.values(servers)) {
 		noticeChannel.send({
 			content: `‼️ **${server.name}** は${time(new Date(data.lastTickTimestamp), TimestampStyles.RelativeTime)}から応答がありません!`
 		})
+		MinecraftServer.sendChatToAll(`<red><bold>${server.name}</bold>は${Math.round((data.timestamp - data.lastTickTimestamp) / 1000)}秒以上応答がありません!`)
 	})
 }
 
