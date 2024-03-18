@@ -20,7 +20,7 @@ export const minimessageNormalizer = (content: string): string => {
 }
 
 export const discordUserNameNormalizer = (message: Message): string => {
-	return `<color:${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.author.username}'>${message.author.displayName}</hover></color>`
+	return `<color:${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.member?.user?.username}'>${message.member?.displayName}</hover></color>`
 }
 
 export const minecraftUserNameNormalizer = (playerId: string, serverName: string): string => {
