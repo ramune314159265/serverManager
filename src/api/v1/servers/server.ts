@@ -54,7 +54,7 @@ serverRouter.get<typeof stopPath, WithServerIdParams<typeof stopPath>>(stopPath,
 			content: 'server has stopped'
 		}))
 	}
-	const isHard = Boolean(req.query.hard)
+	const isHard = Object.hasOwn(req.params, 'hard')
 	isHard ? server.hardStop() : server.stop()
 	res.status(200).send(JSON.stringify({
 		isHard,
