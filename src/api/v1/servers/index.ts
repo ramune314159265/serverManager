@@ -3,10 +3,10 @@ import { consoleRouter } from './console'
 import { servers } from '../../../server'
 import { MinecraftServer } from '../../../server/minecraft'
 
-export const serverRouter = express.Router()
-serverRouter.use('/', consoleRouter)
+export const serversRouter = express.Router()
+serversRouter.use('/', consoleRouter)
 
-serverRouter.get('/', (req, res) => {
+serversRouter.get('/', (req, res) => {
 	const sendData = []
 	for (const server of Object.values(servers)) {
 		switch (true) {
@@ -34,7 +34,7 @@ serverRouter.get('/', (req, res) => {
 	res.send(JSON.stringify(sendData))
 })
 
-serverRouter.get('/:serverId/start', (req, res) => {
+serversRouter.get('/:serverId/start', (req, res) => {
 	if (!Object.hasOwn(servers, req.params.serverId)) {
 		return res.status(404).send(JSON.stringify({
 			content: 'not found'
@@ -58,7 +58,7 @@ serverRouter.get('/:serverId/start', (req, res) => {
 	}))
 })
 
-serverRouter.get('/:serverId/stop', (req, res) => {
+serversRouter.get('/:serverId/stop', (req, res) => {
 	if (!Object.hasOwn(servers, req.params.serverId)) {
 		return res.status(404).send(JSON.stringify({
 			content: 'not found'
