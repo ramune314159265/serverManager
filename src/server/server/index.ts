@@ -63,6 +63,15 @@ export class Server extends EventEmitter {
 			serverId: this.id
 		}))
 	}
+	hardStop() {
+		if (!this.status) {
+			throw new Error('サーバーはオフラインです')
+		}
+		this.machine.connection?.send(JSON.stringify({
+			type: 'server_hard_stop',
+			serverId: this.id
+		}))
+	}
 	writeConsole(content: string) {
 		if (!this.status) {
 			throw new Error('サーバーはオフラインです')

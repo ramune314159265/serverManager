@@ -75,10 +75,11 @@ serverRouter.get('/:serverId/stop', (req, res) => {
 			content: 'server has stopped'
 		}))
 	}
-	server.stop()
+	const isHard = Boolean(req.query.hard)
+	isHard ? server.hardStop() : server.stop()
 	res.status(200).send(JSON.stringify({
+		isHard,
 		id: server.id,
 		content: 'stopped'
 	}))
 })
-
