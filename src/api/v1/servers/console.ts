@@ -1,9 +1,12 @@
 import express from 'express'
 import { servers } from '../../../server'
+import { WithServerIdParams } from './server'
 
-export const consoleRouter = express.Router()
+export const consoleRouter = express.Router({ mergeParams: true })
 
-consoleRouter.get('/:serverId/console/history/', (req, res) => {
+const historyPath = '/history' as const
+
+consoleRouter.get<typeof historyPath, WithServerIdParams<typeof historyPath>>(historyPath, (req, res) => {
 	if (!Object.hasOwn(servers, req.params.serverId)) {
 		return res.status(404).send(JSON.stringify({
 			content: 'not found'
@@ -26,7 +29,7 @@ consoleRouter.get('/:serverId/console/history/', (req, res) => {
 	}))
 })
 
-consoleRouter.ws('/:serverId/console/ws/', (ws, req) => {
+consoleRouter.ws('/console/ws/', (ws, req) => {
 	if (!Object.hasOwn(servers, req.params.serverId)) {
 		ws.send(JSON.stringify({
 			content: 'not found'

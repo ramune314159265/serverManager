@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request } from 'express'
 import expressWs from 'express-ws'
 import cors from 'cors'
 import { serverConfig } from '../config/server'

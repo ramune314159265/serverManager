@@ -1,10 +1,10 @@
 import express from 'express'
-import { consoleRouter } from './console'
 import { servers } from '../../../server'
 import { MinecraftServer } from '../../../server/minecraft'
+import { serverRouter } from './server'
 
-export const serversRouter = express.Router()
-serversRouter.use('/', consoleRouter)
+export const serversRouter = express.Router({ mergeParams: true })
+serversRouter.use('/:serverId/', serverRouter)
 
 serversRouter.get('/', (req, res) => {
 	const sendData = []
@@ -32,54 +32,4 @@ serversRouter.get('/', (req, res) => {
 	}
 
 	res.send(JSON.stringify(sendData))
-})
-
-serversRouter.get('/:serverId/start', (req, res) => {
-	if (!Object.hasOwn(servers, req.params.serverId)) {
-		return res.status(404).send(JSON.stringify({
-			content: 'not found'
-		}))
-	}
-	const server = servers[req.params.serverId]
-	if (!server.machine.isOnline) {
-		return res.status(500).send(JSON.stringify({
-			content: 'machine offline'
-		}))
-	}
-	if (server.status !== 'offline') {
-		return res.status(400).send(JSON.stringify({
-			content: 'already started'
-		}))
-	}
-	server.start()
-	res.status(200).send(JSON.stringify({
-		id: server.id,
-		content: 'started'
-	}))
-})
-
-serversRouter.get('/:serverId/stop', (req, res) => {
-	if (!Object.hasOwn(servers, req.params.serverId)) {
-		return res.status(404).send(JSON.stringify({
-			content: 'not found'
-		}))
-	}
-	const server = servers[req.params.serverId]
-	if (!server.machine.isOnline) {
-		return res.status(500).send(JSON.stringify({
-			content: 'machine offline'
-		}))
-	}
-	if (server.status === 'offline') {
-		return res.status(400).send(JSON.stringify({
-			content: 'server has stopped'
-		}))
-	}
-	const isHard = Boolean(req.query.hard)
-	isHard ? server.hardStop() : server.stop()
-	res.status(200).send(JSON.stringify({
-		isHard,
-		id: server.id,
-		content: 'stopped'
-	}))
 })

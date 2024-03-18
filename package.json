@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@koozaki/romaji-conv": "^2.0.27",
+    "@types/express-serve-static-core": "^4.17.43",
     "cors": "^2.8.5",
     "discord.js": "^14.14.1",
     "express": "^4.18.3",
