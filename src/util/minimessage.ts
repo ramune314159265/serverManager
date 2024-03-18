@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { GuildMember } from 'discord.js'
 
 export const markdownToMinimessage = (content: string): string => {
 	return content
@@ -19,8 +19,8 @@ export const minimessageNormalizer = (content: string): string => {
 	return markdownToMinimessage(URLToMinimessage(content))
 }
 
-export const discordUserNameNormalizer = (message: Message): string => {
-	return `<color:${message.member?.displayHexColor ?? 'white'}><hover:show_text:'@${message.member?.user?.username}'>${message.member?.displayName}</hover></color>`
+export const discordUserNameNormalizer = (member: (GuildMember | null)): string => {
+	return `<color:${member?.displayHexColor ?? 'white'}><hover:show_text:'@${member?.user?.username ?? '不明'}'>${member?.displayName ?? '不明'}</hover></color>`
 }
 
 export const minecraftUserNameNormalizer = (playerId: string, serverName: string): string => {
