@@ -1,4 +1,4 @@
-import { GuildMember } from 'discord.js'
+import { Guild, GuildMember } from 'discord.js'
 
 export const markdownToMinimessage = (content: string): string => {
 	return content
@@ -15,8 +15,41 @@ export const URLToMinimessage = (content: string): string => {
 		.replace(/(https?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig, "<click:open_url:$1><underlined><aqua>$1</aqua></underlined></click>")
 }
 
-export const minimessageNormalizer = (content: string): string => {
-	return markdownToMinimessage(URLToMinimessage(content))
+export const mentionsToMinimessage = (content: string, guild: (Guild | null)): string => {
+	return content
+		.replace(/<id:home>/, () => {
+			return `<aqua>サーバーガイド</aqua>`
+		})
+		.replace(/<id:customize>/, () => {
+			return `<aqua>チャンネル&ロール</aqua>`
+		})
+		.replace(/<id:browse>/, () => {
+			return `<aqua>チャンネル一覧</aqua>`
+		})
+		.replace(/@everyone/, () => {
+			return `<aqua>@everyone</aqua>`
+		})
+		.replace(/@here/, () => {
+			return `<aqua>@here</aqua>`
+		})
+		.replace(/<\/(.+?):(\d{5,20})>/, (match: string, p1: string) => {
+			return `<aqua>/${p1}</aqua>`
+		})
+		.replace(/<@(\d{5,20})>/, (match: string, p1: string) => {
+			return `<color:${guild?.members?.cache?.get?.(p1)?.displayHexColor ?? 'aqua'}>@${guild?.members?.cache?.get?.(p1)?.displayName ?? '不明なユーザー'}</color>`
+		})
+		.replace(/<@&(\d{5,20})>/, (match: string, p1: string) => {
+			const rawHexColor = guild?.roles?.cache?.get?.(p1)?.hexColor
+			const color = (rawHexColor === '#000000') ? null : rawHexColor
+			return `<color:${color ?? 'aqua'}>@${guild?.roles?.cache?.get?.(p1)?.name ?? '不明なロール'}</color>`
+		})
+		.replace(/<#(\d{5,20})>/, (match: string, p1: string) => {
+			return `<aqua>#${guild?.channels?.cache?.get?.(p1)?.name ?? '不明なチャンネル'}</aqua>`
+		})
+}
+
+export const minimessageNormalizer = (content: string, guild: (Guild | null)): string => {
+	return markdownToMinimessage(mentionsToMinimessage(URLToMinimessage(content), guild))
 }
 
 export const discordUserNameNormalizer = (member: (GuildMember | null)): string => {
