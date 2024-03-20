@@ -8,4 +8,5 @@ const serversRouter = (await import('./servers/index')).serversRouter
 v1Router.use('/machines', machineRouter)
 v1Router.use('/servers', serversRouter)
 
-await import('./ws/console')
+import('./ws/console')
+import('./ws/main')
