@@ -1,8 +1,8 @@
-import EventEmitter from 'node:events'
+import EventEmitter2 from 'eventemitter2'
 import { Machine } from '../../machine'
 import { receivedData, serverAttributes, serverData } from '../interfaces'
 
-export class Server extends EventEmitter {
+export class Server extends EventEmitter2 {
 	id: string
 	name: string
 	type: string
