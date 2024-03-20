@@ -7,12 +7,6 @@ export const app = express()
 app.use(cors())
 expressWs(app)
 
-const machineRouter = (await import('./v1/machine/index')).machineRouter
-const serversRouter = (await import('./v1/servers/index')).serversRouter
-
-app.use('/api/v1/machines', machineRouter)
-app.use('/api/v1/servers', serversRouter)
-
-await import('./v1/ws/console')
+app.use('/api/v1', (await import('./v1/index')).v1Router)
 
 app.listen(serverConfig.apiPort)
