@@ -8,9 +8,11 @@ app.use(cors())
 expressWs(app)
 
 const machineRouter = (await import('./v1/machine/index')).machineRouter
-const serverRouter = (await import('./v1/servers/index')).serversRouter
+const serversRouter = (await import('./v1/servers/index')).serversRouter
 
 app.use('/api/v1/machines', machineRouter)
-app.use('/api/v1/servers', serverRouter)
+app.use('/api/v1/servers', serversRouter)
+
+await import('./v1/ws/console')
 
 app.listen(serverConfig.apiPort)
