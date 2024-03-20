@@ -20,7 +20,7 @@ for (const server of Object.values(servers)) {
 	if (!(server instanceof MinecraftServer)) {
 		continue
 	}
-	server.on('minecraftStarted', () => {
+	server.on('minecraft.started', () => {
 		if (!server.attributes.notice?.start) {
 			return
 		}
@@ -28,7 +28,7 @@ for (const server of Object.values(servers)) {
 		MinecraftServer.sendChatToAll(`<aqua><bold>${server.name}</bold>が起動しました`)
 	})
 
-	server.on('minecraftStopped', () => {
+	server.on('minecraft.stopped', () => {
 		if (!server.attributes.notice?.stop) {
 			return
 		}
@@ -39,7 +39,7 @@ for (const server of Object.values(servers)) {
 		MinecraftServer.sendChatToAll(`<aqua><bold>${server.name}</bold>が停止しました`)
 	})
 
-	server.on('minecraftPlayerConnected', (data: playerConnectedEvent) => {
+	server.on('minecraft.player.connected', (data: playerConnectedEvent) => {
 		if (!servers[data.joinedServerId].attributes.notice?.joinLeave) {
 			return
 		}
@@ -57,7 +57,7 @@ for (const server of Object.values(servers)) {
 		server.sendChat(`<aqua>${data.playerId}さんが<bold>${servers[data.joinedServerId].name}</bold>に参加しました`)
 	})
 
-	server.on('minecraftPlayerMoved', (data: playerMovedEvent) => {
+	server.on('minecraft.player.moved', (data: playerMovedEvent) => {
 		if (!servers[data.joinedServerId].attributes.notice?.joinLeave) {
 			return
 		}
@@ -75,7 +75,7 @@ for (const server of Object.values(servers)) {
 		server.sendChat(`<aqua>${data.playerId}さんが<bold>${servers[data.joinedServerId].name}</bold>に参加しました`)
 	})
 
-	server.on('minecraftPlayerDisconnected', (data: playerDisconnectedEvent) => {
+	server.on('minecraft.player.disconnected', (data: playerDisconnectedEvent) => {
 		if (!servers[data.previousJoinedServerId].attributes.notice?.joinLeave) {
 			return
 		}
@@ -92,7 +92,7 @@ for (const server of Object.values(servers)) {
 		})
 	})
 
-	server.on('minecraftPlayerDied', (data: playerDeadEvent) => {
+	server.on('minecraft.player.died', (data: playerDeadEvent) => {
 		if (!server.attributes.notice?.death) {
 			return
 		}
@@ -110,7 +110,7 @@ for (const server of Object.values(servers)) {
 		})
 	})
 
-	server.on('minecraftPlayerAdvancementDone', (data: playerAdvancementDoneEvent) => {
+	server.on('minecraft.player.advancementDone', (data: playerAdvancementDoneEvent) => {
 		if (!server.attributes.notice?.advancement) {
 			return
 		}
@@ -128,7 +128,7 @@ for (const server of Object.values(servers)) {
 		})
 	})
 
-	server.on('minecraftPlayerChatted', async (data: playerChattedEvent) => {
+	server.on('minecraft.player.chatted', async (data: playerChattedEvent) => {
 		try {
 			const toHiragana = romajiConv(data.content).toHiragana()
 			const IMEHandled = (await (await fetch(`https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${encodeURIComponent(toHiragana)}`)).json())
@@ -146,7 +146,7 @@ for (const server of Object.values(servers)) {
 		}
 	})
 
-	server.on('MinecraftServerHanged', async (data: serverHangedEvent) => {
+	server.on('Minecraft.server.hanged', async (data: serverHangedEvent) => {
 		if (!server.attributes.notice?.hang) {
 			return
 		}
