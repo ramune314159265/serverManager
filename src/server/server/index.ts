@@ -11,7 +11,10 @@ export class Server extends EventEmitter2 {
 	status: string
 	consoleBuffer: string
 	constructor(serverData: serverData) {
-		super()
+		super({
+			wildcard: true,
+			maxListeners: 20,
+		})
 		this.id = serverData.id
 		this.name = serverData.name
 		this.type = serverData.type
