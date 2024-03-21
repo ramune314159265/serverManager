@@ -2,12 +2,47 @@ import express from 'express'
 import { RouteParameters } from 'express-serve-static-core'
 import { servers } from '../../../server'
 import { consoleRouter } from './console'
+import { MinecraftServer } from '../../../server/minecraft'
 
 //https://stackoverflow.com/questions/72395842/using-express-mergeparams-with-typescript
 export type WithServerIdParams<T extends string> = RouteParameters<':serverId'> & RouteParameters<T>
 
 export const serverRouter = express.Router({ mergeParams: true })
 serverRouter.use('/console', consoleRouter)
+
+const rootPath = '/' as const
+
+serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath, (req, res) => {
+	if (!Object.hasOwn(servers, req.params.serverId)) {
+		return res.status(404).send(JSON.stringify({
+			content: 'not found'
+		}))
+	}
+	const server = servers[req.params.serverId]
+	server.start()
+	switch (true) {
+		case server instanceof MinecraftServer: {
+			res.status(200).send({
+				players: server.players.list,
+				tps: server.tps,
+				id: server.id,
+				status: server.status,
+				type: server.type,
+				attributes: server.attributes
+			})
+			break
+		}
+		default: {
+			res.status(200).send({
+				id: server.id,
+				status: server.status,
+				type: server.type,
+				attributes: server.attributes
+			})
+			break
+		}
+	}
+})
 
 const startPath = '/start' as const
 
