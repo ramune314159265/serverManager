@@ -1,13 +1,20 @@
-const uuidCache: { [key: string]: string } = {}
+import { readFile } from 'fs/promises'
+import { fileURLToPath } from "node:url"
+import path from 'path'
+import { advancementData } from '../server/interfaces'
 
-export const getSkinImageURL = async (playerId: string): Promise<string> => {
-	if (!Object.hasOwn(uuidCache, playerId)) {
-		const uuid = await (await fetch(`https://api.mojang.com/users/profiles/minecraft/${playerId}`)).json()
-		if(uuid.errorMessage){
-			return ''
-		}
-		uuidCache[playerId] = uuid.id
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+const langData = JSON.parse((await readFile(path.resolve(__dirname, '../../assets/minecraft_lang.json'))).toString())
+
+export const translateFromAdvancementData = (data: advancementData): advancementData => {
+	const key = data.key.split('/').join('.')
+	const translatedName = langData[`advancements.${key}.title`]
+	const translatedDescription = langData[`advancements.${key}.description`]
+	return {
+		...data,
+		name: translatedName ?? data.name,
+		description: translatedDescription ?? data.description
 	}
-	const url = `https://crafatar.com/avatars/${uuidCache[playerId]}.png?size=128&default=MHF_Steve`
-	return url
 }

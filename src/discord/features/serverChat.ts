@@ -7,6 +7,7 @@ import { servers } from '../../server'
 import { URLToMinimessage, discordUserNameNormalizer, minecraftUserNameNormalizer, minimessageNormalizer } from '../../util/minimessage'
 import { MinecraftServer } from '../../server/minecraft'
 import { playerAdvancementDoneEvent, playerChattedEvent, playerConnectedEvent, playerDeadEvent, playerDisconnectedEvent, playerMovedEvent, serverHangedEvent } from '../../server/interfaces'
+import { translateFromAdvancementData } from '../../util/minecraft'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
 if (noticeChannel === undefined) {
@@ -114,13 +115,19 @@ for (const server of Object.values(servers)) {
 		if (!server.attributes.notice?.advancement) {
 			return
 		}
+		const advancementTypes: { [key: string]: string } = {
+			'CHALLENGE': '挑戦',
+			'GOAL': '目標',
+			'TASK': '進捗'
+		}
+		const translatedData = translateFromAdvancementData(data.advancement)
 		const embed = new EmbedBuilder()
 		embed.setAuthor({
 			name: server.name,
 			iconURL: client.user?.displayAvatarURL()
 		})
-		embed.setTitle(`${data.playerId}さんは${data.advancement.type === 'CHALLENGE' ? '挑戦' : '進捗'} ${data.advancement.name} を達成した`)
-		embed.setDescription(data.advancement.description)
+		embed.setTitle(`${data.playerId}さんは${advancementTypes[data.advancement.type] ?? '進捗'} ${translatedData.name} を達成しました`)
+		embed.setDescription(translatedData.description)
 		embed.setColor(data.advancement.type === 'CHALLENGE' ? discordBotConfig.colors.challengeAdvancement : discordBotConfig.colors.normalAdvancement)
 		embed.setTimestamp(new Date(data.timestamp))
 		noticeChannel.send({
