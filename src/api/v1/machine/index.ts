@@ -13,5 +13,5 @@ machineRouter.get('/', (req, res) => {
 		})
 	}
 
-	res.send(JSON.stringify(sendData))
+	res.send(sendData)
 })
