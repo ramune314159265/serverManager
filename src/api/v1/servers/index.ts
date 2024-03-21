@@ -15,7 +15,9 @@ serversRouter.get('/', (req, res) => {
 					players: server.players.list,
 					tps: server.tps,
 					id: server.id,
-					status: server.status
+					status: server.status,
+					type: server.type,
+					attributes: server.attributes
 				})
 				break
 			}
@@ -31,5 +33,5 @@ serversRouter.get('/', (req, res) => {
 		}
 	}
 
-	res.send(JSON.stringify(sendData))
+	res.send(sendData)
 })

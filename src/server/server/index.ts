@@ -1,8 +1,8 @@
-import EventEmitter from 'node:events'
+import EventEmitter2 from 'eventemitter2'
 import { Machine } from '../../machine'
 import { receivedData, serverAttributes, serverData } from '../interfaces'
 
-export class Server extends EventEmitter {
+export class Server extends EventEmitter2 {
 	id: string
 	name: string
 	type: string
@@ -11,7 +11,11 @@ export class Server extends EventEmitter {
 	status: string
 	consoleBuffer: string
 	constructor(serverData: serverData) {
-		super()
+		super({
+			wildcard: true,
+			delimiter: '.',
+			maxListeners: 20,
+		})
 		this.id = serverData.id
 		this.name = serverData.name
 		this.type = serverData.type
@@ -25,18 +29,18 @@ export class Server extends EventEmitter {
 			case 'server_started':
 				this.status = this.type === 'common' ? 'online' : 'booting'
 				this.consoleBuffer = ''
-				this.emit('processStart')
+				this.emit('process.start')
 				break
 			case 'server_stopped':
 				this.status = 'offline'
-				this.emit('processStop')
+				this.emit('process.stop')
 				break
 			case 'server_stdout':
 				if (!(typeof data.content === 'string')) {
 					return
 				}
 				this.consoleBuffer += data.content
-				this.emit('stdout', data.content)
+				this.emit('process.stdout', data.content)
 				break
 
 			default:

@@ -53,13 +53,16 @@ export interface playerDeadEvent {
 	timestamp: number
 }
 
+export interface advancementData {
+	type: string,
+	description: string,
+	name: string,
+	key: string
+}
+
 export interface playerAdvancementDoneEvent {
 	playerId: string,
-	advancement: {
-		type: string,
-		description: string,
-		name: string
-	},
+	advancement: advancementData,
 	timestamp: number
 }
 
