@@ -3,23 +3,17 @@ import { serversRouter } from '../servers'
 
 serversRouter.ws('/:serverId/console/ws/', (ws, req) => {
 	if (!Object.hasOwn(servers, req.params.serverId)) {
-		ws.send(JSON.stringify({
-			content: 'not found'
-		}))
-		return ws.close()
+		ws.close(1000, 'not found')
+		return
 	}
 	const server = servers[req.params.serverId]
 	if (!server.machine.isOnline) {
-		ws.send(JSON.stringify({
-			content: 'machine offline'
-		}))
-		return ws.close()
+		ws.close(1000, 'machine offline')
+		return
 	}
 	if (server.status === 'offline') {
-		ws.send(JSON.stringify({
-			content: 'server offline'
-		}))
-		return ws.close()
+		ws.close(1000, 'server offline')
+		return
 	}
 
 	const stdoutHandle = (data: string) => {
