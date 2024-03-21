@@ -19,7 +19,6 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 		})
 	}
 	const server = servers[req.params.serverId]
-	server.start()
 	switch (true) {
 		case server instanceof MinecraftServer: {
 			res.status(200).send({
