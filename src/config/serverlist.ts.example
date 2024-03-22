@@ -6,6 +6,7 @@ export const serverList: Array<serverData> = [
 		id: 'proxy',
 		type: 'mc',
 		machineId: 'test',
+		autoStart: true,
 		attributes: {
 			isStartableFromDiscord: true,
 		}
@@ -14,6 +15,7 @@ export const serverList: Array<serverData> = [
 		id: 's1',
 		type: 'mc',
 		machineId: 'test',
+		autoStart: false,
 		attributes: {
 			isStartableFromDiscord: true,
 			notice: {
@@ -31,6 +33,7 @@ export const serverList: Array<serverData> = [
 		id: 's2',
 		type: 'mc',
 		machineId: 'test',
+		autoStart: false,
 		attributes: {
 			isStartableFromDiscord: true,
 			notice: {
@@ -48,6 +51,7 @@ export const serverList: Array<serverData> = [
 		id: 'test',
 		type: 'common',
 		machineId: 'test',
+		autoStart: false,
 		attributes: {
 			isStartableFromDiscord: false,
 			notice: {

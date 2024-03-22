@@ -16,7 +16,8 @@ export interface serverData {
 	id: string,
 	type: string,
 	machineId: string,
-	attributes: serverAttributes
+	attributes: serverAttributes,
+	autoStart: boolean
 }
 
 export interface receivedData {

@@ -1,7 +1,7 @@
 import WebSocket from 'ws'
 
 import { machineList } from '../config/machinelist'
-import { servers } from '../server'
+import { autoStartQueue, servers } from '../server'
 import { machineData } from './interfaces'
 
 export class Machine {
@@ -26,10 +26,27 @@ export class Machine {
 
 		connection.on('message', async message => {
 			const data = JSON.parse(message.toString())
-			if (!data.serverId) {
-				return
+			switch (data.type) {
+				case 'machine_started':
+					for (const server of Object.values(servers)) {
+						if (!server.autoStart) {
+							continue
+						}
+						if (!(server.machine.id === this.id)) {
+							continue
+						}
+						autoStartQueue(() => {
+							server.start()
+						})
+					}
+					break
+				default:
+					if (!data.serverId) {
+						return
+					}
+					servers[data.serverId].dataReceived(data)
+					break
 			}
-			servers[data.serverId].dataReceived(data)
 		})
 
 		connection.on('close', () => {

@@ -10,6 +10,7 @@ export class Server extends EventEmitter2 {
 	machine: Machine
 	status: string
 	consoleBuffer: string
+	autoStart: boolean
 	constructor(serverData: serverData) {
 		super({
 			wildcard: true,
@@ -23,6 +24,7 @@ export class Server extends EventEmitter2 {
 		this.machine = Machine.list[serverData.machineId]
 		this.status = 'offline'
 		this.consoleBuffer = ''
+		this.autoStart = serverData.autoStart
 	}
 	dataReceived(data: receivedData) {
 		switch (data.type) {
