@@ -1,4 +1,5 @@
 import { WebSocketServer } from 'ws'
+
 import { servers } from '../../server'
 import { MinecraftServer } from '../../server/minecraft'
 import { serverConfig } from '../../config/server'

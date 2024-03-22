@@ -1,4 +1,9 @@
-import { ChatInputCommandInteraction, Events, InteractionType } from 'discord.js'
+import {
+	ChatInputCommandInteraction,
+	Events,
+	InteractionType
+} from 'discord.js'
+
 import { client } from '..'
 
 client.on(Events.InteractionCreate, async interaction => {

@@ -1,4 +1,7 @@
-import { ApplicationCommandDataResolvable, CommandInteraction } from 'discord.js'
+import {
+	ApplicationCommandDataResolvable,
+	CommandInteraction
+} from 'discord.js'
 
 export const commandsDataArray = [
 	await import('./address/index'),

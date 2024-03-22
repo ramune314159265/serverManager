@@ -4,6 +4,7 @@ import {
 	Partials,
 	ActivityType,
 } from 'discord.js'
+
 import { discordBotConfig } from '../config/discord'
 export const client = new Client({
 	intents: [

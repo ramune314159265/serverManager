@@ -1,4 +1,8 @@
-import { CommandInteraction, EmbedBuilder } from 'discord.js'
+import {
+	CommandInteraction,
+	EmbedBuilder
+} from 'discord.js'
+
 import { discordBotConfig } from '../../../config/discord'
 
 export default {

@@ -1,4 +1,4 @@
-import './api'
+import './api/index'
 import './server/index'
 import './websocket/child/index'
 import './discord/index'

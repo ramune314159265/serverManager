@@ -1,5 +1,6 @@
 import { Events } from 'discord.js'
-import { client } from '..'
+
+import { client } from '../index'
 import { minecraftWsServer } from '../../websocket/minecraft'
 
 client.on(Events.MessageCreate, message => {

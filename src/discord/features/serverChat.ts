@@ -1,12 +1,32 @@
-import { ColorResolvable, EmbedBuilder, Events, TimestampStyles, roleMention, time } from 'discord.js'
+import {
+	ColorResolvable,
+	EmbedBuilder,
+	Events,
+	TimestampStyles,
+	roleMention,
+	time
+} from 'discord.js'
 import romajiConv from '@koozaki/romaji-conv'
 
 import { client } from '..'
 import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
-import { URLToMinimessage, discordUserNameNormalizer, minecraftUserNameNormalizer, minimessageNormalizer } from '../../util/minimessage'
+import {
+	URLToMinimessage,
+	discordUserNameNormalizer,
+	minecraftUserNameNormalizer,
+	minimessageNormalizer
+} from '../../util/minimessage'
 import { MinecraftServer } from '../../server/minecraft'
-import { playerAdvancementDoneEvent, playerChattedEvent, playerConnectedEvent, playerDeadEvent, playerDisconnectedEvent, playerMovedEvent, serverHangedEvent } from '../../server/interfaces'
+import {
+	playerAdvancementDoneEvent,
+	playerChattedEvent,
+	playerConnectedEvent,
+	playerDeadEvent,
+	playerDisconnectedEvent,
+	playerMovedEvent,
+	serverHangedEvent
+} from '../../server/interfaces'
 import { translateFromAdvancementData } from '../../util/minecraft'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)

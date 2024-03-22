@@ -1,4 +1,11 @@
-import { ActionRowBuilder, CommandInteraction, StringSelectMenuBuilder, StringSelectMenuInteraction, StringSelectMenuOptionBuilder } from 'discord.js'
+import {
+	ActionRowBuilder,
+	CommandInteraction,
+	StringSelectMenuBuilder,
+	StringSelectMenuInteraction,
+	StringSelectMenuOptionBuilder
+} from 'discord.js'
+
 import { servers } from '../../../server'
 import { statusEmojis } from '../../../util/server'
 

@@ -1,4 +1,7 @@
-import { ApplicationCommandOptionType, CommandInteraction } from 'discord.js'
+import {
+	ApplicationCommandOptionType,
+	CommandInteraction
+} from 'discord.js'
 
 export default {
 	data: {

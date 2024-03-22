@@ -1,4 +1,10 @@
-import { CommandInteraction, EmbedBuilder, time, TimestampStyles } from 'discord.js'
+import {
+	CommandInteraction,
+	EmbedBuilder,
+	time,
+	TimestampStyles
+} from 'discord.js'
+
 import { startAt } from '../../index'
 export default {
 	data: {

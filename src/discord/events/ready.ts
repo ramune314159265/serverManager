@@ -1,5 +1,6 @@
 import { Events } from 'discord.js'
-import { client } from '..'
+
+import { client } from '../index'
 import { commandsDataArray } from '../commands'
 
 client.on(Events.ClientReady, () => {

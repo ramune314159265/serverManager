@@ -1,4 +1,5 @@
 import { ActivityType } from 'discord.js'
+
 import { client } from '..'
 
 const updatePresence = () => {

@@ -1,6 +1,7 @@
 import { readFile } from 'fs/promises'
 import { fileURLToPath } from "node:url"
 import path from 'path'
+
 import { advancementData } from '../server/interfaces'
 
 const __filename = fileURLToPath(import.meta.url)

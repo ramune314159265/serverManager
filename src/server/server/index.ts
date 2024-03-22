@@ -1,4 +1,5 @@
 import EventEmitter2 from 'eventemitter2'
+
 import { Machine } from '../../machine'
 import { receivedData, serverAttributes, serverData } from '../interfaces'
 
