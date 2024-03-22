@@ -10,4 +10,4 @@ app.use(cors())
 app.use('/api/v1', (await import('./v1/index')).v1Router)
 
 app.listen(serverConfig.apiPort)
-console.log('listened')
+console.log(`http listening:${serverConfig.apiPort}`)
