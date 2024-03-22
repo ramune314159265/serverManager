@@ -66,7 +66,7 @@ export class MinecraftServer extends Server {
 						return
 					}
 					this.lastHangedTickTimestamp = data.lastTickTimestamp
-					this.emit('Minecraft.server.hanged', (data as serverHangedEvent))
+					this.emit('minecraft.server.hanged', (data as serverHangedEvent))
 					break
 				default:
 					break

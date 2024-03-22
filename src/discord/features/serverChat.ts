@@ -153,7 +153,7 @@ for (const server of Object.values(servers)) {
 		}
 	})
 
-	server.on('Minecraft.server.hanged', async (data: serverHangedEvent) => {
+	server.on('minecraft.server.hanged', async (data: serverHangedEvent) => {
 		if (!server.attributes.notice?.hang) {
 			return
 		}
