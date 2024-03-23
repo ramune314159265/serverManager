@@ -11,6 +11,7 @@ machineRouter.get('/', (req, res) => {
 		sendData.push({
 			id: machine.id,
 			online: machine.isOnline,
+			name: machine.name
 		})
 	}
 

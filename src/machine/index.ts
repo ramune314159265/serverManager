@@ -13,9 +13,11 @@ export class Machine {
 	}
 
 	id: string
+	name: string
 	connection: WebSocket | null
 	constructor(machineData: machineData) {
 		this.id = machineData.id
+		this.name = machineData.name
 		this.connection = null
 	}
 	get isOnline() {

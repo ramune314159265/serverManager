@@ -13,21 +13,23 @@ serversRouter.get('/', (req, res) => {
 		switch (true) {
 			case server instanceof MinecraftServer: {
 				sendData.push({
-					players: server.players.list,
-					tps: server.tps,
 					id: server.id,
+					name: server.name,
+					index: server.index,
 					status: server.status,
 					type: server.type,
-					attributes: server.attributes
+					players: server.players.list,
+					tps: server.tps,
 				})
 				break
 			}
 			default: {
 				sendData.push({
 					id: server.id,
+					name: server.name,
+					index: server.index,
 					status: server.status,
 					type: server.type,
-					attributes: server.attributes
 				})
 				break
 			}

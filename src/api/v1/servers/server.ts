@@ -23,21 +23,25 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 	switch (true) {
 		case server instanceof MinecraftServer: {
 			res.status(200).send({
-				players: server.players.list,
-				tps: server.tps,
 				id: server.id,
+				name: server.name,
+				index: server.index,
 				status: server.status,
 				type: server.type,
-				attributes: server.attributes
+				attributes: server.attributes,
+				players: server.players.list,
+				tps: server.tps,
 			})
 			break
 		}
 		default: {
 			res.status(200).send({
 				id: server.id,
+				name: server.name,
+				index: server.index,
 				status: server.status,
 				type: server.type,
-				attributes: server.attributes
+				attributes: server.attributes,
 			})
 			break
 		}
