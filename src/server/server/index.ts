@@ -6,13 +6,14 @@ import { receivedData, serverAttributes, serverData } from '../interfaces'
 export class Server extends EventEmitter2 {
 	id: string
 	name: string
+	index: number
 	type: string
 	attributes: serverAttributes
 	machine: Machine
 	status: string
 	consoleBuffer: string
 	autoStart: boolean
-	constructor(serverData: serverData) {
+	constructor(serverData: serverData, index: number) {
 		super({
 			wildcard: true,
 			delimiter: '.',
@@ -20,6 +21,7 @@ export class Server extends EventEmitter2 {
 		})
 		this.id = serverData.id
 		this.name = serverData.name
+		this.index = index
 		this.type = serverData.type
 		this.attributes = serverData.attributes
 		this.machine = Machine.list[serverData.machineId]

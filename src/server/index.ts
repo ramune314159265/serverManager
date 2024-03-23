@@ -6,8 +6,8 @@ import { serverData } from './interfaces'
 import { serverTypes } from './servertypes'
 
 export const servers: { [key: string]: Server } = {}
-serverList.forEach((serverData: serverData) => {
-	servers[serverData.id] = new serverTypes[serverData.type](serverData)
+serverList.forEach((serverData: serverData, index: number) => {
+	servers[serverData.id] = new serverTypes[serverData.type](serverData, index)
 })
 
 export const autoStartQueue = throttledQueue(1, 5000)

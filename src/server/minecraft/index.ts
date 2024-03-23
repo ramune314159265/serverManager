@@ -18,8 +18,8 @@ export class MinecraftServer extends Server {
 	wsConnection?: WebSocket
 	lastHangedTickTimestamp: number
 	tps: number
-	constructor(serverData: serverData) {
-		super(serverData)
+	constructor(serverData: serverData, index: number) {
+		super(serverData, index)
 		this.players = new Players()
 		this.lastHangedTickTimestamp = Date.now()
 		this.tps = 0
