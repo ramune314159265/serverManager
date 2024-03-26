@@ -22,7 +22,11 @@ serversRouter.ws('/:serverId/console/ws/', (ws, req) => {
 			content: data
 		}))
 	}
+	const stopHandle = () => {
+		ws.close(1000, 'server stopped')
+	}
 	server.on('process.stdout', stdoutHandle)
+	server.on('process.stop', stopHandle)
 	ws.on('message', message => {
 		const data = JSON.parse(message.toString())
 		switch (data.type) {
@@ -37,5 +41,6 @@ serversRouter.ws('/:serverId/console/ws/', (ws, req) => {
 	})
 	ws.on('close', () => {
 		server.removeListener('process.stdout', stdoutHandle)
+		server.removeListener('process.stop', stopHandle)
 	})
 })
