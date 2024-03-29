@@ -32,7 +32,7 @@
     "@types/express-serve-static-core": "^4.17.43",
     "bcdice": "^4.6.0",
     "cors": "^2.8.5",
-    "discord.js": "^14.14.1",
+    "discord.js": "^14.12.1",
     "eventemitter2": "^6.4.9",
     "express": "^4.18.3",
     "express-ws": "^5.0.2",
