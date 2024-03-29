@@ -58,7 +58,8 @@ export interface advancementData {
 	type: string,
 	description: string,
 	name: string,
-	key: string
+	key: string,
+	namespace: string
 }
 
 export interface playerAdvancementDoneEvent {
