@@ -1,4 +1,7 @@
 import { Guild, GuildMember } from 'discord.js'
+import { playerChattedEvent } from '../server/interfaces'
+import { evalDiceCommand, isDiceCommand } from './dice'
+import { servers } from '../server'
 
 export const markdownToMinimessage = (content: string): string => {
 	return content
@@ -58,4 +61,33 @@ export const discordUserNameNormalizer = (member: (GuildMember | null)): string 
 
 export const minecraftUserNameNormalizer = (playerId: string, serverName: string): string => {
 	return `<hover:show_text:'クリックしてプライベートメッセージコマンドを補完'><click:suggest_command:/tell ${playerId} >${playerId}<gray>@${serverName}</gray></click></hover>`
+}
+
+export const diceCommandToMinimessage = ( data: playerChattedEvent): ({ contentToSendMinecraft: string; contentToSendDiscord: string } | null) => {
+	if (!isDiceCommand(data.content)) {
+		return null
+	}
+	const result = evalDiceCommand(data.content)
+	if (result === null) {
+		return null
+	}
+	switch (true) {
+		case !(result.success || result.failure):
+			return {
+				contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] <white>${data.content} <reset>${result.text}`,
+				contentToSendDiscord: `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} ${result.text}`
+			}
+		case result.success:
+			return {
+				contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] <white>${data.content} <reset><aqua>${result.critical ? '<bold>' : ''}${result.text}`,
+				contentToSendDiscord: `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} ${result.text}`
+			}
+		case result.failure:
+			return {
+				contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] <white>${data.content} <reset><red>${result.fumble ? '<bold>' : ''}${result.text}`,
+				contentToSendDiscord: `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} ${result.text}`
+			}
+		default:
+			return null
+	}
 }

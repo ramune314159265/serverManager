@@ -11,6 +11,7 @@ import { client } from '..'
 import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import {
+	diceCommandToMinimessage,
 	discordUserNameNormalizer,
 	minimessageNormalizer
 } from '../../util/minimessage'
@@ -154,6 +155,13 @@ for (const server of Object.values(servers)) {
 	})
 
 	server.on('minecraft.player.chatted', async (data: playerChattedEvent) => {
+		const diceCommandResult = diceCommandToMinimessage(data)
+		if (diceCommandResult) {
+			const { contentToSendMinecraft, contentToSendDiscord } = diceCommandResult
+			server.sendChat(contentToSendMinecraft)
+			noticeChannel.send(contentToSendDiscord)
+			return
+		}
 		const { contentToSendMinecraft, contentToSendDiscord } = await japaneseNormalizer(data)
 		server.sendChat(contentToSendMinecraft)
 		noticeChannel.send(contentToSendDiscord)
