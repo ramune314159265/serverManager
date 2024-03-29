@@ -1,0 +1,13 @@
+diff --git a/node_modules/@koozaki/romaji-conv/lib/index.js b/node_modules/@koozaki/romaji-conv/lib/index.js
+index 150afe2..78c9b3c 100644
+--- a/node_modules/@koozaki/romaji-conv/lib/index.js
++++ b/node_modules/@koozaki/romaji-conv/lib/index.js
+@@ -41,7 +41,7 @@ class RomajiConv {
+     const outputString = Object.keys(mapObject).reduce(
+       (processingString, pattern) => {
+         const replacement = mapObject[pattern];
+-        const regex = new RegExp(pattern, 'gi');
++        const regex = new RegExp(pattern, 'g');
+         return processingString.replace(regex, replacement);
+       },
+       someString
