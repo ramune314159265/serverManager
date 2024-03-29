@@ -6,15 +6,12 @@ import {
 	roleMention,
 	time
 } from 'discord.js'
-import romajiConv from '@koozaki/romaji-conv'
 
 import { client } from '..'
 import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import {
-	URLToMinimessage,
 	discordUserNameNormalizer,
-	minecraftUserNameNormalizer,
 	minimessageNormalizer
 } from '../../util/minimessage'
 import { MinecraftServer } from '../../server/minecraft'
@@ -28,6 +25,7 @@ import {
 	serverHangedEvent
 } from '../../server/interfaces'
 import { translateFromAdvancementData } from '../../util/minecraft'
+import { japaneseNormalizer } from '../../util/japanese'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
 if (noticeChannel === undefined) {
@@ -156,21 +154,9 @@ for (const server of Object.values(servers)) {
 	})
 
 	server.on('minecraft.player.chatted', async (data: playerChattedEvent) => {
-		try {
-			const toHiragana = romajiConv(data.content).toHiragana()
-			const IMEHandled = (await (await fetch(`https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${encodeURIComponent(toHiragana)}`)).json())
-				.map((i: string) => i[1][0])
-				.join('')
-			const contentToSendMinecraft = `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] ${URLToMinimessage(data.content)} <reset><gold>(${URLToMinimessage(IMEHandled)})</gold>`
-			const contentToSendDiscord = `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} (${IMEHandled})`
-			server.sendChat(contentToSendMinecraft)
-			noticeChannel.send(contentToSendDiscord)
-		} catch (e) {
-			const contentToSendMinecraft = `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] ${URLToMinimessage(data.content)} <reset><red>(エラー)</red>`
-			const contentToSendDiscord = `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} (エラー)`
-			server.sendChat(contentToSendMinecraft)
-			noticeChannel.send(contentToSendDiscord)
-		}
+		const { contentToSendMinecraft, contentToSendDiscord } = await japaneseNormalizer(data)
+		server.sendChat(contentToSendMinecraft)
+		noticeChannel.send(contentToSendDiscord)
 	})
 
 	server.on('minecraft.server.hanged', async (data: serverHangedEvent) => {
