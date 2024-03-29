@@ -4,8 +4,8 @@
   "description": "serverManager",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:start": "ts-node src/index.ts",
-    "start": "tsc && node build/index.js",
+    "dev:start": "node --import ./loader.js src/index.ts",
+    "start": "node --import ./loader.js src/index.ts",
     "lint": "eslint src",
     "fix": "eslint src --fix",
     "postinstall": "patch-package"
