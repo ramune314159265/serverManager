@@ -1,3 +1,5 @@
+import WebSocket from 'ws'
+
 import { servers } from '../../../server'
 import { serversRouter } from '../servers'
 
@@ -27,7 +29,7 @@ serversRouter.ws('/:serverId/console/ws/', (ws, req) => {
 	}
 	server.on('process.stdout', stdoutHandle)
 	server.on('process.stop', stopHandle)
-	ws.on('message', message => {
+	ws.on('message', (message: WebSocket.RawData) => {
 		const data = JSON.parse(message.toString())
 		switch (data.type) {
 			case 'write_stdin': {
