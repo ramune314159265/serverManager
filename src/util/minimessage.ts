@@ -20,33 +20,21 @@ export const URLToMinimessage = (content: string): string => {
 
 export const mentionsToMinimessage = (content: string, guild: (Guild | null)): string => {
 	return content
-		.replace(/<id:home>/, () => {
-			return `<aqua>サーバーガイド</aqua>`
-		})
-		.replace(/<id:customize>/, () => {
-			return `<aqua>チャンネル&ロール</aqua>`
-		})
-		.replace(/<id:browse>/, () => {
-			return `<aqua>チャンネル一覧</aqua>`
-		})
-		.replace(/@everyone/, () => {
-			return `<aqua>@everyone</aqua>`
-		})
-		.replace(/@here/, () => {
-			return `<aqua>@here</aqua>`
-		})
-		.replace(/<\/(.+?):(\d{5,20})>/, (match: string, p1: string) => {
-			return `<aqua>/${p1}</aqua>`
-		})
-		.replace(/<@(\d{5,20})>/, (match: string, p1: string) => {
+		.replaceAll('<id:home>', '<aqua>サーバーガイド</aqua>')
+		.replaceAll('<id:customize>', '<aqua>チャンネル&ロール</aqua>')
+		.replaceAll('<id:browse>', '<aqua>チャンネル一覧</aqua>')
+		.replaceAll('@everyone', '<aqua>@everyone</aqua>')
+		.replaceAll('@here', '<aqua>@here</aqua>')
+		.replace(/<\/(.+?):(\d{5,20})>/g, `<aqua>/$1</aqua>`)
+		.replace(/<@(\d{5,20})>/g, (match: string, p1: string) => {
 			return `<color:${guild?.members?.cache?.get?.(p1)?.displayHexColor ?? 'aqua'}>@${guild?.members?.cache?.get?.(p1)?.displayName ?? '不明なユーザー'}</color>`
 		})
-		.replace(/<@&(\d{5,20})>/, (match: string, p1: string) => {
+		.replace(/<@&(\d{5,20})>/g, (match: string, p1: string) => {
 			const rawHexColor = guild?.roles?.cache?.get?.(p1)?.hexColor
 			const color = (rawHexColor === '#000000') ? null : rawHexColor
 			return `<color:${color ?? 'aqua'}>@${guild?.roles?.cache?.get?.(p1)?.name ?? '不明なロール'}</color>`
 		})
-		.replace(/<#(\d{5,20})>/, (match: string, p1: string) => {
+		.replace(/<#(\d{5,20})>/g, (match: string, p1: string) => {
 			return `<aqua>#${guild?.channels?.cache?.get?.(p1)?.name ?? '不明なチャンネル'}</aqua>`
 		})
 }
@@ -63,7 +51,7 @@ export const minecraftUserNameNormalizer = (playerId: string, serverName: string
 	return `<hover:show_text:'クリックしてプライベートメッセージコマンドを補完'><click:suggest_command:/tell ${playerId} >${playerId}<gray>@${serverName}</gray></click></hover>`
 }
 
-export const diceCommandToMinimessage = ( data: playerChattedEvent): ({ contentToSendMinecraft: string; contentToSendDiscord: string } | null) => {
+export const diceCommandToMinimessage = (data: playerChattedEvent): ({ contentToSendMinecraft: string; contentToSendDiscord: string } | null) => {
 	if (!isDiceCommand(data.content)) {
 		return null
 	}
