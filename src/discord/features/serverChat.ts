@@ -25,7 +25,7 @@ import {
 	playerMovedEvent,
 	serverHangedEvent
 } from '../../server/interfaces'
-import { translateFromAdvancementData } from '../../util/minecraft'
+import { translateFromAdvancementData, translateFromDeathMessage } from '../../util/minecraft'
 import { japaneseNormalizer } from '../../util/japanese'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
@@ -121,8 +121,8 @@ for (const server of Object.values(servers)) {
 			name: server.name,
 			iconURL: client.user?.displayAvatarURL()
 		})
-		embed.setTitle(data.reason)
-		embed.setDescription('なんだとぉ'/*伝統*/)
+		embed.setTitle(translateFromDeathMessage(data.reason))
+		embed.setDescription(`なんだとぉ`)
 		embed.setColor(discordBotConfig.colors.death as ColorResolvable)
 		embed.setTimestamp(new Date(data.timestamp))
 		noticeChannel.send({
