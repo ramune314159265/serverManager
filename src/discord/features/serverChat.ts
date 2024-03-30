@@ -116,13 +116,20 @@ for (const server of Object.values(servers)) {
 		if (!server.attributes.notice?.death) {
 			return
 		}
+		const deathSadMessages = [
+			'なんだとぉ',
+			'なにぃ',
+			'\\ (^o^) /',
+			'死んだんじゃないの〜'
+		]
+		const deathSadMessage = deathSadMessages[Math.floor(Math.random() * deathSadMessages.length)]
 		const embed = new EmbedBuilder()
 		embed.setAuthor({
 			name: server.name,
 			iconURL: client.user?.displayAvatarURL()
 		})
 		embed.setTitle(translateFromDeathMessage(data.reason))
-		embed.setDescription(`なんだとぉ`)
+		embed.setDescription(`${data.reason}\n${deathSadMessage}`)
 		embed.setColor(discordBotConfig.colors.death as ColorResolvable)
 		embed.setTimestamp(new Date(data.timestamp))
 		noticeChannel.send({
