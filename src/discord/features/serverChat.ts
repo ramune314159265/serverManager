@@ -154,7 +154,7 @@ for (const server of Object.values(servers)) {
 			iconURL: client.user?.displayAvatarURL()
 		})
 		embed.setTitle(`${data.playerId}さんは${advancementTypes[data.advancement.type] ?? '進捗'} ${translatedData.name} を達成しました`)
-		embed.setDescription(translatedData.description)
+		embed.setDescription(`${translatedData.description}${data.advancement.type === 'CHALLENGE' ? '\nすごい！' : ''}`)
 		embed.setColor(data.advancement.type === 'CHALLENGE' ? discordBotConfig.colors.challengeAdvancement : discordBotConfig.colors.normalAdvancement)
 		embed.setTimestamp(new Date(data.timestamp))
 		noticeChannel.send({
