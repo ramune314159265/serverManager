@@ -27,6 +27,7 @@ import {
 } from '../../server/interfaces'
 import { translateFromAdvancementData, translateFromDeathMessage } from '../../util/minecraft'
 import { japaneseNormalizer } from '../../util/japanese'
+import { statusEmojis } from '../../util/server'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
 if (noticeChannel === undefined) {
@@ -44,7 +45,7 @@ for (const server of Object.values(servers)) {
 		if (!server.attributes.notice?.start) {
 			return
 		}
-		noticeChannel.send(`${server.attributes.startMention === true ? roleMention(discordBotConfig.mentionRoleId) : ''}✅ **${server.name}** が起動しました`)
+		noticeChannel.send(`${server.attributes.startMention === true ? roleMention(discordBotConfig.mentionRoleId) : ''}${statusEmojis.online} **${server.name}** が起動しました`)
 		MinecraftServer.sendChatToAll(`<aqua><bold>${server.name}</bold>が起動しました`)
 	})
 
@@ -53,7 +54,7 @@ for (const server of Object.values(servers)) {
 			return
 		}
 		noticeChannel.send({
-			content: `🛑 **${server.name}** が停止しました`,
+			content: `${statusEmojis.offline} **${server.name}** が停止しました`,
 			flags: [4096] //https://stackoverflow.com/questions/76517603/how-to-send-a-silent-message-with-discord-js
 		})
 		MinecraftServer.sendChatToAll(`<aqua><bold>${server.name}</bold>が停止しました`)

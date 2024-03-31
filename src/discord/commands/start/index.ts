@@ -40,7 +40,7 @@ export default {
 			.setOptions(...returnServersMenuOptions())
 
 		const message = await interaction.reply({
-			content: '起動するサーバーを選んでください\n🔴: オフライン\n🟡: 起動中\n🟢: オンライン',
+			content: `起動するサーバーを選んでください\n${statusEmojis.offline}: オフライン\n${statusEmojis.booting}: 起動中\n${statusEmojis.online}: オンライン`,
 			components: [
 				new ActionRowBuilder<StringSelectMenuBuilder>()
 					.addComponents(select)
@@ -59,7 +59,6 @@ export default {
 						.setPlaceholder('ここを押して起動するサーバーを選択')
 						.setOptions(...returnServersMenuOptions())
 					await selectMenuInteraction.update({
-						content: '起動するサーバーを選んでください\n🔴: オフライン\n🟡: 起動中\n🟢: オンライン',
 						components: [
 							new ActionRowBuilder<StringSelectMenuBuilder>()
 								.addComponents(select)

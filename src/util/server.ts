@@ -1,8 +1,8 @@
 import { ComponentEmojiResolvable } from 'discord.js'
 
 export const statusEmojis: { [key: string]: ComponentEmojiResolvable } = {
-	offline: '🔴',
+	offline: '🛑',
 	booting: '🟡',
-	online: '🟢',
+	online: '✅',
 	unknown: '❓'
 }
