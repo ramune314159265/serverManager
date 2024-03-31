@@ -20,6 +20,9 @@ const returnServersMenuOptions = (): Array<StringSelectMenuOptionBuilder> => {
 			.setLabel(server.name)
 			.setEmoji(statusEmojis[server.status] ?? statusEmojis.unknown)
 			.setValue(server.id)
+		if(!server.machine.isOnline){
+			menuOption.setDescription('現在マシンがオフラインです')
+		}
 		serversMenuOptions.push(menuOption)
 	}
 	return serversMenuOptions
