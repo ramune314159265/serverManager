@@ -62,17 +62,17 @@ export const diceCommandToMinimessage = (data: playerChattedEvent): ({ contentTo
 	switch (true) {
 		case !(result.success || result.failure):
 			return {
-				contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] <white>${data.content} <reset>${result.text}`,
+				contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] <hover:show_text:'クリックしてコピー'><click:copy_to_clipboard:'${data.content}'><white>${data.content} <reset><hover:show_text:'クリックしてコマンドをコピー'><click:copy_to_clipboard:'${data.content}'>${result.text}`,
 				contentToSendDiscord: `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} ${result.text}`
 			}
 		case result.success:
 			return {
-				contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] <white>${data.content} <reset><aqua>${result.critical ? '<bold>' : ''}${result.text}`,
+				contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] <hover:show_text:'クリックしてコピー'><click:copy_to_clipboard:'${data.content}'><white>${data.content} <reset><hover:show_text:'クリックしてコマンドをコピー'><click:copy_to_clipboard:'${data.content}'><aqua>${result.critical ? '<bold>' : ''}${result.text}`,
 				contentToSendDiscord: `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} ${result.text}`
 			}
 		case result.failure:
 			return {
-				contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] <white>${data.content} <reset><red>${result.fumble ? '<bold>' : ''}${result.text}`,
+				contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] <hover:show_text:'クリックしてコピー'><click:copy_to_clipboard:'${data.content}'><white>${data.content} <reset><hover:show_text:'クリックしてコマンドをコピー'><click:copy_to_clipboard:'${data.content}'><red>${result.fumble ? '<bold>' : ''}${result.text}`,
 				contentToSendDiscord: `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} ${result.text}`
 			}
 		default:
