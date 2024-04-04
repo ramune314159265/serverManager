@@ -26,7 +26,8 @@ for (const [key, value] of Object.entries(serverOriginalLangData)) {
 	if (!key.startsWith('death.')) {
 		continue
 	}
-	const regRegex = new RegExp(value.replace(/%([0-9])\$s/g, '(?<s$1>\\w+)'))
+	const regRegex = new RegExp(value.replace(/%([0-9])\$s/g, '(?<s$1>(.*))'))
+	console.log(regRegex)
 	originalDeathMessagesRegexps[key] = regRegex
 }
 
