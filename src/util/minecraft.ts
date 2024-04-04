@@ -11,6 +11,23 @@ const langData: { [key: string]: string } = JSON.parse((await readFile(path.reso
 const originalLangData: { [key: string]: string } = JSON.parse((await readFile(path.resolve(__dirname, '../../assets/minecraft_lang_original.json'))).toString())
 const originalLangDataReversed: { [key: string]: string } = Object.fromEntries(Object.entries(originalLangData).map(([k, v]) => [v, k]))
 
+const getThingTranslateKey = (content: string): (string | null) => {
+	const key = originalLangDataReversed[content]
+	if (!key) {
+		return null
+	}
+	return key
+}
+
+export const translateThingName = (content: string): string => {
+	const translateKey = getThingTranslateKey(content)
+	if (translateKey === null) {
+		return content
+	}
+
+	return langData[translateKey]
+}
+
 export const translateFromAdvancementData = (data: advancementData): advancementData => {
 	const translatedName = translateThingName(data.name)
 	const translatedDescription = translateThingName(data.description)
@@ -27,7 +44,6 @@ for (const [key, value] of Object.entries(originalLangData)) {
 		continue
 	}
 	const regRegex = new RegExp(value.replace(/%([0-9])\$s/g, '(?<s$1>(.*))'))
-	console.log(regRegex)
 	originalDeathMessagesRegexps[key] = regRegex
 }
 
@@ -51,27 +67,9 @@ export const translateFromDeathMessage = (content: string): string => {
 	if (!result?.groups) {
 		return translatedContent
 	}
-	console.log(result.groups)
 	let processed = translatedContent
 	for (const [index, value] of Object.entries(result.groups)) {
 		processed = processed.replaceAll(`%${index[1]}$s`, translateThingName(value))
 	}
 	return processed
-}
-
-const getThingTranslateKey = (content: string): (string | null) => {
-	const key = originalLangDataReversed[content]
-	if (!key) {
-		return null
-	}
-	return key
-}
-
-export const translateThingName = (content: string): string => {
-	const translateKey = getThingTranslateKey(content)
-	if (translateKey === null) {
-		return content
-	}
-
-	return langData[translateKey]
 }
