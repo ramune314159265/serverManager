@@ -8,7 +8,8 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const langData: { [key: string]: string } = JSON.parse((await readFile(path.resolve(__dirname, '../../assets/minecraft_lang.json'))).toString())
-const serverOriginalLangData: { [key: string]: string } = JSON.parse((await readFile(path.resolve(__dirname, '../../assets/minecraft_lang_original.json'))).toString())
+const originalLangData: { [key: string]: string } = JSON.parse((await readFile(path.resolve(__dirname, '../../assets/minecraft_lang_original.json'))).toString())
+const originalLangDataReversed: { [key: string]: string } = Object.fromEntries(Object.entries(originalLangData).map(([k, v]) => [v, k]))
 
 export const translateFromAdvancementData = (data: advancementData): advancementData => {
 	const key = data.key.split('/').join('.')
@@ -22,7 +23,7 @@ export const translateFromAdvancementData = (data: advancementData): advancement
 }
 
 const originalDeathMessagesRegexps: { [key: string]: RegExp } = {}
-for (const [key, value] of Object.entries(serverOriginalLangData)) {
+for (const [key, value] of Object.entries(originalLangData)) {
 	if (!key.startsWith('death.')) {
 		continue
 	}
@@ -54,7 +55,24 @@ export const translateFromDeathMessage = (content: string): string => {
 	console.log(result.groups)
 	let processed = translatedContent
 	for (const [index, value] of Object.entries(result.groups)) {
-		processed = processed.replaceAll(`%${index[1]}$s`, value)
+		processed = processed.replaceAll(`%${index[1]}$s`, translateThingName(value))
 	}
 	return processed
+}
+
+const getThingTranslateKey = (content: string): (string | null) => {
+	const key = originalLangDataReversed[content]
+	if (!key) {
+		return null
+	}
+	return key
+}
+
+export const translateThingName = (content: string): string => {
+	const translateKey = getThingTranslateKey(content)
+	if (translateKey === null) {
+		return content
+	}
+
+	return langData[translateKey]
 }
