@@ -12,9 +12,8 @@ const originalLangData: { [key: string]: string } = JSON.parse((await readFile(p
 const originalLangDataReversed: { [key: string]: string } = Object.fromEntries(Object.entries(originalLangData).map(([k, v]) => [v, k]))
 
 export const translateFromAdvancementData = (data: advancementData): advancementData => {
-	const key = data.key.split('/').join('.')
-	const translatedName = langData[`advancements.${key}.title`]
-	const translatedDescription = langData[`advancements.${key}.description`]
+	const translatedName = translateThingName(data.name)
+	const translatedDescription = translateThingName(data.description)
 	return {
 		...data,
 		name: translatedName ?? data.name,
