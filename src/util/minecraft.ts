@@ -39,13 +39,13 @@ export const translateFromAdvancementData = (data: advancementData): advancement
 }
 
 const originalDeathMessagesRegexps: { [key: string]: RegExp } = {}
-for (const [key, value] of Object.entries(originalLangData)) {
-	if (!key.startsWith('death.')) {
-		continue
-	}
-	const regRegex = new RegExp(value.replace(/%([0-9])\$s/g, '(?<s$1>(.*))'))
-	originalDeathMessagesRegexps[key] = regRegex
-}
+Object.entries(originalLangData)
+	.filter(([key]) => key.startsWith('death.'))
+	.reverse()
+	.forEach(([key, value]) => {
+		const regRegex = new RegExp(value.replace(/%([0-9])\$s/g, '(?<s$1>(.*))'))
+		originalDeathMessagesRegexps[key] = regRegex
+	})
 
 const getDeathTranslateKey = (content: string): (string | null) => {
 	for (const [key, regex] of Object.entries(originalDeathMessagesRegexps)) {
