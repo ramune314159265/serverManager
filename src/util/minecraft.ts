@@ -67,9 +67,9 @@ export const translateFromDeathMessage = (content: string): string => {
 	if (!result?.groups) {
 		return translatedContent
 	}
-	let processed = translatedContent
-	for (const [index, value] of Object.entries(result.groups)) {
-		processed = processed.replaceAll(`%${index[1]}$s`, translateThingName(value))
-	}
-	return processed
+	return Object.entries(result.groups)
+		.reduce((previous, current) => {
+			const [index, value] = current
+			return previous.replaceAll(`%${index}$s`, translateThingName(value))
+		}, translatedContent)
 }
