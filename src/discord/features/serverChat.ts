@@ -15,7 +15,7 @@ import {
 	discordUserNameNormalizer,
 	minimessageNormalizer
 } from '../../util/minimessage'
-import { MinecraftServer } from '../../server/minecraft'
+import { MinecraftServer } from '../../server/minecraft/main'
 import {
 	playerAdvancementDoneEvent,
 	playerChattedEvent,
@@ -46,7 +46,7 @@ for (const server of Object.values(servers)) {
 			return
 		}
 		noticeChannel.send(`${server.attributes.startMention === true ? roleMention(discordBotConfig.mentionRoleId) : ''}${statusEmojis.online} **${server.name}** が起動しました`)
-		MinecraftServer.sendChatToAll(`<aqua><bold>${server.name}</bold>が起動しました`)
+		server.proxy.sendChat(`<aqua><bold>${server.name}</bold>が起動しました`)
 	})
 
 	server.on('minecraft.stopped', () => {
@@ -57,7 +57,7 @@ for (const server of Object.values(servers)) {
 			content: `${statusEmojis.offline} **${server.name}** が停止しました`,
 			flags: [4096] //https://stackoverflow.com/questions/76517603/how-to-send-a-silent-message-with-discord-js
 		})
-		MinecraftServer.sendChatToAll(`<aqua><bold>${server.name}</bold>が停止しました`)
+		server.proxy.sendChat(`<aqua><bold>${server.name}</bold>が停止しました`)
 	})
 
 	server.on('minecraft.player.connected', (data: playerConnectedEvent) => {
@@ -75,7 +75,7 @@ for (const server of Object.values(servers)) {
 		noticeChannel.send({
 			embeds: [embed]
 		})
-		server.sendChat(`<aqua>${data.playerId}さんが<bold>${servers[data.joinedServerId].name}</bold>に参加しました`)
+		server.proxy.sendChat(`<aqua>${data.playerId}さんが<bold>${servers[data.joinedServerId].name}</bold>に参加しました`)
 	})
 
 	server.on('minecraft.player.moved', (data: playerMovedEvent) => {
@@ -93,7 +93,7 @@ for (const server of Object.values(servers)) {
 		noticeChannel.send({
 			embeds: [embed]
 		})
-		server.sendChat(`<aqua>${data.playerId}さんが<bold>${servers[data.joinedServerId].name}</bold>に参加しました`)
+		server.proxy.sendChat(`<aqua>${data.playerId}さんが<bold>${servers[data.joinedServerId].name}</bold>に参加しました`)
 	})
 
 	server.on('minecraft.player.disconnected', (data: playerDisconnectedEvent) => {
@@ -166,12 +166,12 @@ for (const server of Object.values(servers)) {
 		const diceCommandResult = diceCommandToMinimessage(data)
 		if (diceCommandResult) {
 			const { contentToSendMinecraft, contentToSendDiscord } = diceCommandResult
-			server.sendChat(contentToSendMinecraft)
+			server.proxy.sendChat(contentToSendMinecraft)
 			noticeChannel.send(contentToSendDiscord)
 			return
 		}
 		const { contentToSendMinecraft, contentToSendDiscord } = await japaneseNormalizer(data)
-		server.sendChat(contentToSendMinecraft)
+		server.proxy.sendChat(contentToSendMinecraft)
 		noticeChannel.send(contentToSendDiscord)
 	})
 
@@ -182,7 +182,7 @@ for (const server of Object.values(servers)) {
 		noticeChannel.send({
 			content: `‼️ **${server.name}** は${time(new Date(data.lastTickTimestamp), TimestampStyles.RelativeTime)}から応答がありません!`
 		})
-		MinecraftServer.sendChatToAll(`<red><bold>${server.name}</bold>は${Math.round((data.timestamp - data.lastTickTimestamp) / 1000)}秒以上応答がありません!`)
+		server.proxy.sendChat(`<red><bold>${server.name}</bold>は${Math.round((data.timestamp - data.lastTickTimestamp) / 1000)}秒以上応答がありません!`)
 	})
 }
 

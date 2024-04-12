@@ -11,14 +11,35 @@ export interface serverAttributes {
 	}
 }
 
-export interface serverData {
+type minecraftServerBase = {
+	type: 'mc',
+	proxyId: string
+}
+
+type minecraftProxyBase = {
+	type: 'mc_proxy',
+	childrenIds: Array<string>
+}
+
+type commonServerBase = {
+	type: 'common'
+}
+
+type serverDataBase = {
 	name: string,
 	id: string,
-	type: string,
 	machineId: string,
 	attributes: serverAttributes,
-	autoStart: boolean
+	autoStart: boolean,
 }
+
+export type minecraftServerData = serverDataBase & minecraftServerBase
+
+export type minecraftProxyData = serverDataBase & minecraftProxyBase
+
+export type commonServerData = serverDataBase & commonServerBase
+
+export type serverData = serverDataBase & (commonServerBase | minecraftServerBase | minecraftProxyBase)
 
 export interface receivedData {
 	type: string,
@@ -77,6 +98,12 @@ export interface playerChattedEvent {
 }
 
 export interface serverHangedEvent {
+	tps: number,
+	lastTickTimestamp: number,
+	timestamp: number
+}
+
+export interface serverSentInfo {
 	tps: number,
 	lastTickTimestamp: number,
 	timestamp: number

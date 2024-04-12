@@ -1,11 +1,12 @@
 import WebSocket from 'ws'
 
 import { Server } from '../server'
-import { playerAdvancementDoneEvent, playerChattedEvent, playerConnectedEvent, playerDeadEvent, playerDisconnectedEvent, playerMovedEvent, serverData, serverHangedEvent } from '../interfaces'
+import { playerAdvancementDoneEvent, playerChattedEvent, playerConnectedEvent, playerDeadEvent, playerDisconnectedEvent, playerMovedEvent, serverData, serverSentInfo } from '../interfaces'
 import { Players } from './players'
 import { minecraftWsServer } from '../../websocket/minecraft'
+import { servers } from '..'
 
-export class MinecraftServer extends Server {
+export class MinecraftServerBase extends Server {
 	static sendChatToAll(content: string) {
 		minecraftWsServer.clients.forEach(wsConnection => {
 			wsConnection.send(JSON.stringify({
@@ -16,13 +17,12 @@ export class MinecraftServer extends Server {
 	}
 	players: Players
 	wsConnection?: WebSocket
-	lastHangedTickTimestamp: number
-	tps: number
 	constructor(serverData: serverData, index: number) {
 		super(serverData, index)
 		this.players = new Players()
-		this.lastHangedTickTimestamp = Date.now()
-		this.tps = 0
+
+		this.on('minecraft.started', () => this.status = 'online')
+		this.on('minecraft.stopped', () => this.status = 'booting')
 	}
 	setWsConnection(connection: WebSocket) {
 		this.wsConnection = connection
@@ -31,22 +31,19 @@ export class MinecraftServer extends Server {
 			const data = JSON.parse(message.toString())
 			switch (data.type) {
 				case 'server_started':
-					this.status = 'online'
 					this.emit('minecraft.started')
 					break
 				case 'server_stopped':
-					this.status = 'booting'
 					this.emit('minecraft.stopped')
-					this.tps = 0
 					break
 				case 'player_connected':
-					this.emit('minecraft.player.connected', (data as playerConnectedEvent))
+					servers[data.joinedServerId].emit('minecraft.player.connected', (data as playerConnectedEvent))
 					break
 				case 'player_moved':
-					this.emit('minecraft.player.moved', (data as playerMovedEvent))
+					servers[data.joinedServerId].emit('minecraft.player.moved', (data as playerMovedEvent))
 					break
 				case 'player_disconnected':
-					this.emit('minecraft.player.disconnected', (data as playerDisconnectedEvent))
+					servers[data.previousJoinedServerId].emit('minecraft.player.disconnected', (data as playerDisconnectedEvent))
 					break
 				case 'player_died':
 					this.emit('minecraft.player.died', (data as playerDeadEvent))
@@ -55,31 +52,14 @@ export class MinecraftServer extends Server {
 					this.emit('minecraft.player.advancementDone', (data as playerAdvancementDoneEvent))
 					break
 				case 'player_chatted':
-					this.emit('minecraft.player.chatted', (data as playerChattedEvent))
+					servers[data.serverId].emit('minecraft.player.chatted', (data as playerChattedEvent))
 					break
 				case 'every_second_info_send':
-					this.tps = Math.round(data.tps * 100) / 100
-					if (data.timestamp - data.lastTickTimestamp <= 30 * 1000) {
-						return
-					}
-					if (data.lastTickTimestamp === this.lastHangedTickTimestamp) {
-						return
-					}
-					this.lastHangedTickTimestamp = data.lastTickTimestamp
-					this.emit('minecraft.server.hanged', (data as serverHangedEvent))
+					this.emit('minecraft.server.info', (data as serverSentInfo))
 					break
 				default:
 					break
 			}
 		})
-	}
-	sendChat(content: string) {
-		if (!this.wsConnection) {
-			throw new Error('server is offline')
-		}
-		this.wsConnection.send(JSON.stringify({
-			type: 'send_chat',
-			content
-		}))
 	}
 }

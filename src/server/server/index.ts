@@ -30,6 +30,7 @@ export class Server extends EventEmitter2 {
 		this.autoStart = serverData.autoStart
 	}
 	dataReceived(data: receivedData) {
+		console.log(this.name)
 		switch (data.type) {
 			case 'server_started':
 				this.status = this.type === 'common' ? 'online' : 'booting'

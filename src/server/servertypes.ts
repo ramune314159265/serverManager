@@ -1,8 +1,13 @@
-import { MinecraftServer } from './minecraft'
+import { MinecraftServer } from './minecraft/main'
 import { Server } from './server'
-import { serverData } from './interfaces'
+import { MinecraftProxy } from './minecraft/proxy'
 
-export const serverTypes: { [key: string]: new (serverData: serverData, index: number) => Server } = {
+export const serverTypes = {
 	'mc': MinecraftServer,
+	'mc_proxy': MinecraftProxy,
 	'common': Server
+} as const
+
+export const getServerClass = (type: keyof typeof serverTypes) => {
+	return serverTypes[type]
 }

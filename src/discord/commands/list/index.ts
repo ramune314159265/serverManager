@@ -2,7 +2,7 @@ import { APIEmbedField, ActionRowBuilder, ButtonBuilder, ButtonInteraction, Butt
 
 import { client } from '../..'
 import { servers } from '../../../server'
-import { MinecraftServer } from '../../../server/minecraft'
+import { MinecraftServer } from '../../../server/minecraft/main'
 import { statusEmojis } from '../../../util/server'
 
 const returnServerFieldsEmbed = (canUseReloadButton: boolean): EmbedBuilder => {
