@@ -45,7 +45,7 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 				type: server.type,
 				attributes: server.attributes,
 				players: server.players.list,
-				childIds: server.childServers.map(s => s.id),
+				childIds: server.childServerIds,
 			})
 			break
 		}

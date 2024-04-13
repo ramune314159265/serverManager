@@ -1,4 +1,4 @@
-import { minecraftProxyData } from '../interfaces'
+import { minecraftProxyData, playerChattedEvent, playerConnectedEvent, playerDisconnectedEvent, playerMovedEvent } from '../interfaces'
 import { MinecraftServerBase } from '.'
 import { servers } from '..'
 import { MinecraftServer } from './main'
@@ -18,7 +18,27 @@ export class MinecraftProxy extends MinecraftServerBase {
 			content
 		}))
 	}
+	minecraftDataReceived(message: string) {
+		super.minecraftDataReceived(message)
+		const data = JSON.parse(message)
+		switch (data.type) {
+			case 'player_connected':
+				this.childServers[data.joinedServerId].emit('minecraft.player.connected', (data as playerConnectedEvent))
+				break
+			case 'player_moved':
+				this.childServers[data.joinedServerId].emit('minecraft.player.moved', (data as playerMovedEvent))
+				break
+			case 'player_disconnected':
+				this.childServers[data.previousJoinedServerId].emit('minecraft.player.disconnected', (data as playerDisconnectedEvent))
+				break
+			case 'player_chatted':
+				this.childServers[data.serverId].emit('minecraft.player.chatted', (data as playerChattedEvent))
+				break
+		}
+	}
 	get childServers() {
-		return (this.childServerIds.map(id => servers[id]) as Array<MinecraftServer>)
+		const childServers: { [key: string]: MinecraftServer } = {}
+		this.childServerIds.forEach(id => childServers[id] = (servers[id] as MinecraftServer))
+		return childServers
 	}
 }

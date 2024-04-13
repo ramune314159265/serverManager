@@ -33,7 +33,7 @@ serversRouter.get('/', (req, res) => {
 					status: server.status,
 					type: server.type,
 					players: server.players.list,
-					childIds: server.childServers.map(s => s.id),
+					childIds: server.childServerIds,
 				})
 				break
 			}
