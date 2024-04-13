@@ -43,7 +43,7 @@ Object.entries(originalLangData)
 	.filter(([key]) => key.startsWith('death.'))
 	.reverse()
 	.forEach(([key, value]) => {
-		const regRegex = new RegExp(value.replace(/%([0-9])\$s/g, '(?<s$1>(.*))'))
+		const regRegex = new RegExp(value.replace(/%([0-9])\$s/g, '(?<s_$1>(.*))'))
 		originalDeathMessagesRegexps[key] = regRegex
 	})
 
@@ -70,6 +70,6 @@ export const translateFromDeathMessage = (content: string): string => {
 	return Object.entries(result.groups)
 		.reduce((previous, current) => {
 			const [index, value] = current
-			return previous.replaceAll(`%${index[1]}$s`, translateThingName(value))
+			return previous.replaceAll(`%${index.split('_')[1]}$s`, translateThingName(value))
 		}, translatedContent)
 }
