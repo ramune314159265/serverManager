@@ -22,6 +22,7 @@ serversRouter.get('/', (req, res) => {
 					players: server.players.list,
 					tps: server.tps,
 					proxyId: server.proxy.id,
+					minecraftItemIcon: server.minecraftItemIcon
 				})
 				break
 			}

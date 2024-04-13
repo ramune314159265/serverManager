@@ -13,7 +13,8 @@ export interface serverAttributes {
 
 type minecraftServerBase = {
 	type: 'mc',
-	proxyId: string
+	proxyId: string,
+	minecraftItemIcon: string
 }
 
 type minecraftProxyBase = {

@@ -33,6 +33,7 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 				players: server.players.list,
 				proxyId: server.proxy.id,
 				tps: server.tps,
+				minecraftItemIcon: server.minecraftItemIcon
 			})
 			break
 		}
