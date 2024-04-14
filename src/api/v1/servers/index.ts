@@ -16,6 +16,7 @@ serversRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					name: server.name,
+					description: server.description,
 					index: server.index,
 					status: server.status,
 					type: server.type,
@@ -30,6 +31,7 @@ serversRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					name: server.name,
+					description: server.description,
 					index: server.index,
 					status: server.status,
 					type: server.type,
@@ -42,6 +44,7 @@ serversRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					name: server.name,
+					description: server.description,
 					index: server.index,
 					status: server.status,
 					type: server.type,

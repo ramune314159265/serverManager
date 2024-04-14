@@ -29,6 +29,7 @@ type commonServerBase = {
 type serverDataBase = {
 	name: string,
 	id: string,
+	description?: string,
 	machineId: string,
 	attributes: serverAttributes,
 	autoStart: boolean,

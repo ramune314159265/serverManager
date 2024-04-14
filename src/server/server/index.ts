@@ -7,6 +7,7 @@ export class Server extends EventEmitter2 {
 	id: string
 	name: string
 	index: number
+	description: string
 	type: string
 	attributes: serverAttributes
 	machine: Machine
@@ -22,6 +23,7 @@ export class Server extends EventEmitter2 {
 		this.id = serverData.id
 		this.name = serverData.name
 		this.index = index
+		this.description = serverData.description ?? ''
 		this.type = serverData.type
 		this.attributes = serverData.attributes
 		this.machine = Machine.list[serverData.machineId]
