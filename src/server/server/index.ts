@@ -14,6 +14,8 @@ export class Server extends EventEmitter2 {
 	status: string
 	consoleBuffer: string
 	autoStart: boolean
+	consoleCol: number
+	consoleRow: number
 	constructor(serverData: serverData, index: number) {
 		super({
 			wildcard: true,
@@ -29,15 +31,24 @@ export class Server extends EventEmitter2 {
 		this.machine = Machine.list[serverData.machineId]
 		this.status = 'offline'
 		this.consoleBuffer = ''
+		this.consoleCol = 0
+		this.consoleRow = 0
 		this.autoStart = serverData.autoStart
 	}
 	dataReceived(data: receivedData) {
-		console.log(this.name)
 		switch (data.type) {
 			case 'server_started':
 				this.status = this.type === 'common' ? 'online' : 'booting'
 				this.consoleBuffer = ''
 				this.emit('process.start')
+				break
+			case 'resize':
+				if (!((typeof data.col === 'number') && (typeof data.row === 'number'))) {
+					return
+				}
+				this.consoleCol = data.col
+				this.consoleRow = data.row
+				this.emit('process.resize', { col: data.col, row: data.row })
 				break
 			case 'server_stopped':
 				this.status = 'offline'

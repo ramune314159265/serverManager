@@ -46,7 +46,9 @@ export type serverData = serverDataBase & (commonServerBase | minecraftServerBas
 export interface receivedData {
 	type: string,
 	serverId?: string,
-	content?: string
+	content?: string,
+	col?: number,
+	row?: number
 }
 
 export interface playerConnectedEvent {
