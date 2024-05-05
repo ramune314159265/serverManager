@@ -4,8 +4,13 @@ export const serverList: Array<serverData> = [
 	{
 		name: 'Velocity',
 		id: 'proxy',
-		type: 'mc',
-		machineId: 'test',
+		type: 'mc_proxy',
+		icon: {
+			imageUrl: '',
+			minecraftItemId: ''
+		},
+		childrenIds: ['s1', 's2'],
+		machineId: 'testmachine',
 		autoStart: true,
 		attributes: {
 			isStartableFromDiscord: true,
@@ -14,8 +19,14 @@ export const serverList: Array<serverData> = [
 		name: 'テスト1サーバー',
 		id: 's1',
 		type: 'mc',
-		machineId: 'test',
+		proxyId: 'proxy',
+		description: ['テスト1', 'aaaa'],
+		machineId: 'testmachine',
 		autoStart: false,
+		icon: {
+			imageUrl: '',
+			minecraftItemId: 'minecraft:beacon'
+		},
 		attributes: {
 			isStartableFromDiscord: true,
 			notice: {
@@ -32,31 +43,19 @@ export const serverList: Array<serverData> = [
 		name: 'テスト2サーバー',
 		id: 's2',
 		type: 'mc',
-		machineId: 'test',
+		proxyId: 'proxy',
+		description: ['テストだよ'],
+		machineId: 'testmachine',
 		autoStart: false,
+		icon: {
+			imageUrl: '',
+			minecraftItemId: 'minecraft:nether_star'
+		},
 		attributes: {
 			isStartableFromDiscord: true,
 			notice: {
 				start: true,
 				stop: true,
-				hang: true,
-				joinLeave: false,
-				advancement: false,
-				death: false
-			},
-			startMention: false
-		}
-	}, {
-		name: 'テスト',
-		id: 'test',
-		type: 'common',
-		machineId: 'test',
-		autoStart: false,
-		attributes: {
-			isStartableFromDiscord: false,
-			notice: {
-				start: false,
-				stop: false,
 				hang: true,
 				joinLeave: false,
 				advancement: false,

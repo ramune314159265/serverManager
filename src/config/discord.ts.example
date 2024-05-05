@@ -3,6 +3,7 @@ import { ColorResolvable } from 'discord.js'
 export const discordBotConfig = {
 	token: '',
 	noticeChannelId: '',
+	mentionRoleId: '',
 	colors: {
 		join: '#81f542',
 		move: '#4287f5',
