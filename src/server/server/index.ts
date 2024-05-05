@@ -1,13 +1,14 @@
 import EventEmitter2 from 'eventemitter2'
 
 import { Machine } from '../../machine'
-import { receivedData, serverAttributes, serverData } from '../interfaces'
+import { receivedData, serverAttributes, serverData, serverIcons } from '../interfaces'
 
 export class Server extends EventEmitter2 {
 	id: string
 	name: string
 	index: number
-	description: string
+	description: Array<string>
+	icon: serverIcons
 	type: string
 	attributes: serverAttributes
 	machine: Machine
@@ -25,7 +26,8 @@ export class Server extends EventEmitter2 {
 		this.id = serverData.id
 		this.name = serverData.name
 		this.index = index
-		this.description = serverData.description ?? ''
+		this.description = serverData.description ?? []
+		this.icon = serverData.icon ?? {}
 		this.type = serverData.type
 		this.attributes = serverData.attributes
 		this.machine = Machine.list[serverData.machineId]

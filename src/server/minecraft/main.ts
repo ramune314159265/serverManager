@@ -7,13 +7,11 @@ export class MinecraftServer extends MinecraftServerBase {
 	lastHangedTickTimestamp: number
 	tps: number
 	proxyId: string
-	minecraftItemIcon: string
 	constructor(serverData: minecraftServerData, index: number) {
 		super(serverData, index)
 		this.lastHangedTickTimestamp = Date.now()
 		this.tps = 0
 		this.proxyId = serverData.proxyId
-		this.minecraftItemIcon = serverData.minecraftItemIcon
 
 		this.on('minecraft.stopped', () => {
 			this.tps = 0

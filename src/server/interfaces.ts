@@ -11,10 +11,14 @@ export interface serverAttributes {
 	}
 }
 
+export interface serverIcons {
+	imageUrl?: string,
+	minecraftItemId?: string
+}
+
 type minecraftServerBase = {
 	type: 'mc',
 	proxyId: string,
-	minecraftItemIcon: string
 }
 
 type minecraftProxyBase = {
@@ -29,7 +33,8 @@ type commonServerBase = {
 type serverDataBase = {
 	name: string,
 	id: string,
-	description?: string,
+	description?: Array<string>,
+	icon?: serverIcons,
 	machineId: string,
 	attributes: serverAttributes,
 	autoStart: boolean,
