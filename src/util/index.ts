@@ -1,0 +1,5 @@
+import './dice'
+import './japanese'
+import './minecraft'
+import './minimessage'
+import './server'
