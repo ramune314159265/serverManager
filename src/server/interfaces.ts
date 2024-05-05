@@ -12,8 +12,8 @@ export interface serverAttributes {
 }
 
 export interface serverIcons {
-	imageUrl?: string,
-	minecraftItemId?: string
+	imageUrl: string,
+	minecraftItemId: string
 }
 
 type minecraftServerBase = {
@@ -34,7 +34,7 @@ type serverDataBase = {
 	name: string,
 	id: string,
 	description?: Array<string>,
-	icon?: serverIcons,
+	icon: serverIcons,
 	machineId: string,
 	attributes: serverAttributes,
 	autoStart: boolean,

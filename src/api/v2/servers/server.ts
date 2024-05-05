@@ -26,7 +26,8 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 			res.status(200).send({
 				id: server.id,
 				name: server.name,
-				description: server.description.join('\n'),
+				description: server.description,
+				icon: server.icon,
 				index: server.index,
 				status: server.status,
 				type: server.type,
@@ -34,7 +35,6 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 				players: server.players.list,
 				proxyId: server.proxy.id,
 				tps: server.tps,
-				minecraftItemIcon: server.icon.minecraftItemId ?? ''
 			})
 			break
 		}
@@ -42,7 +42,8 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 			res.status(200).send({
 				id: server.id,
 				name: server.name,
-				description: server.description.join('\n'),
+				description: server.description,
+				icon: server.icon,
 				index: server.index,
 				status: server.status,
 				type: server.type,
@@ -56,7 +57,8 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 			res.status(200).send({
 				id: server.id,
 				name: server.name,
-				description: server.description.join('\n'),
+				description: server.description,
+				icon: server.icon,
 				index: server.index,
 				status: server.status,
 				type: server.type,

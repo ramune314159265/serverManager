@@ -16,14 +16,14 @@ serversRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					name: server.name,
-					description: server.description.join('\n'),
+					description: server.description,
+					icon: server.icon,
 					index: server.index,
 					status: server.status,
 					type: server.type,
 					players: server.players.list,
 					tps: server.tps,
 					proxyId: server.proxy.id,
-					minecraftItemIcon: server.icon.minecraftItemId ?? ''
 				})
 				break
 			}
@@ -31,7 +31,8 @@ serversRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					name: server.name,
-					description: server.description.join('\n'),
+					description: server.description,
+					icon: server.icon,
 					index: server.index,
 					status: server.status,
 					type: server.type,
@@ -44,7 +45,8 @@ serversRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					name: server.name,
-					description: server.description.join('\n'),
+					description: server.description,
+					icon: server.icon,
 					index: server.index,
 					status: server.status,
 					type: server.type,

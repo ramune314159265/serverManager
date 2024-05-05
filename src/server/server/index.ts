@@ -27,7 +27,7 @@ export class Server extends EventEmitter2 {
 		this.name = serverData.name
 		this.index = index
 		this.description = serverData.description ?? []
-		this.icon = serverData.icon ?? {}
+		this.icon = serverData.icon
 		this.type = serverData.type
 		this.attributes = serverData.attributes
 		this.machine = Machine.list[serverData.machineId]
