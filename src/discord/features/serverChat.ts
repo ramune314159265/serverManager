@@ -196,10 +196,20 @@ client.on(Events.MessageCreate, async message => {
 	if (message.author.bot && message.author.id === client.user?.id) {
 		return
 	}
-	if (message.content === '') {
+	const messageContents: Array<string> = []
+	if (message.content !== '') {
+		messageContents.push(minimessageNormalizer(message.content, message.guild))
+	}
+	if (message.attachments.size !== 0) {
+		messageContents.push(`${message.attachments.map(attachment => `<click:open_url:${attachment.url}><underlined><aqua>${attachment.name}</aqua></underlined></click>`).join(', ')}をアップロードしました`)
+	}
+	if (message.stickers.size !== 0) {
+		messageContents.push(`スタンプ(${[...message.stickers.values()][0].name})を送信しました`)
+	}
+	if (messageContents.length === 0) {
 		return
 	}
 	const repliedMessage = message.reference?.messageId ? await message.channel.messages.fetch(message.reference?.messageId) : null
-	const contentToSendMinecraft = `[<color:#5865F2>Discord</color> | ${discordUserNameNormalizer(message.member)}${repliedMessage ? `(${discordUserNameNormalizer(repliedMessage.member)}に返信)` : ''}] <reset>${minimessageNormalizer(message.content, message.guild)}`
+	const contentToSendMinecraft = `[<color:#5865F2>Discord</color> | ${discordUserNameNormalizer(message.member)}${repliedMessage ? `(${discordUserNameNormalizer(repliedMessage.member)}に返信)` : ''}] <reset>${messageContents.join('\n')}`
 	MinecraftServer.sendChatToAll(contentToSendMinecraft)
 })
