@@ -2,8 +2,8 @@ import express from 'express'
 
 import { servers } from '../../../server'
 import { MinecraftServer } from '../../../server/minecraft/main'
-import { serverRouter } from './server'
 import { MinecraftProxy } from '../../../server/minecraft/proxy'
+import { serverRouter } from './server'
 
 export const serversRouter = express.Router({ mergeParams: true })
 serversRouter.use('/:serverId/', serverRouter)
@@ -16,6 +16,7 @@ serversRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					name: server.name,
+					shortName: server.shortName,
 					description: server.description,
 					icon: server.icon,
 					index: server.index,
@@ -31,6 +32,7 @@ serversRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					name: server.name,
+					shortName: server.shortName,
 					description: server.description,
 					icon: server.icon,
 					index: server.index,
@@ -45,6 +47,7 @@ serversRouter.get('/', (req, res) => {
 				sendData.push({
 					id: server.id,
 					name: server.name,
+					shortName: server.shortName,
 					description: server.description,
 					icon: server.icon,
 					index: server.index,

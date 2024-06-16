@@ -6,6 +6,7 @@ import { receivedData, serverAttributes, serverData, serverIcons } from '../inte
 export class Server extends EventEmitter2 {
 	id: string
 	name: string
+	shortName: string
 	index: number
 	description: Array<string>
 	icon: serverIcons
@@ -25,6 +26,7 @@ export class Server extends EventEmitter2 {
 		})
 		this.id = serverData.id
 		this.name = serverData.name
+		this.shortName = serverData.shortName ?? serverData.name
 		this.index = index
 		this.description = serverData.description ?? []
 		this.icon = serverData.icon

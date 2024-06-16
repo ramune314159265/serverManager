@@ -1,7 +1,7 @@
 import romajiConv from '@koozaki/romaji-conv'
+import { servers } from '../server'
 import { playerChattedEvent } from '../server/interfaces'
 import { URLToMinimessage, minecraftUserNameNormalizer } from './minimessage'
-import { servers } from '../server'
 
 export const japaneseNormalizer = async (data: playerChattedEvent): Promise<{ contentToSendMinecraft: string; contentToSendDiscord: string }> => {
 	//ひらがな、カタカナが含まれていなかったら必要
@@ -21,12 +21,12 @@ export const japaneseNormalizer = async (data: playerChattedEvent): Promise<{ co
 			.map((i: string) => i[1][0])
 			.join('')
 		return {
-			contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] ${URLToMinimessage(data.content)} <reset><gold>(${URLToMinimessage(IMEHandled)})</gold>`,
+			contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].shortName)}] ${URLToMinimessage(data.content)} <reset><gold>(${URLToMinimessage(IMEHandled)})</gold>`,
 			contentToSendDiscord: `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} (${IMEHandled})`
 		}
 	} catch (e) {
 		return {
-			contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].name)}] ${URLToMinimessage(data.content)} <reset><red>(エラー)</red>`,
+			contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].shortName)}] ${URLToMinimessage(data.content)} <reset><red>(エラー)</red>`,
 			contentToSendDiscord: `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} (エラー)`
 		}
 	}

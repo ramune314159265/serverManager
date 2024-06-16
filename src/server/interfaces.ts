@@ -32,6 +32,7 @@ type commonServerBase = {
 
 type serverDataBase = {
 	name: string,
+	shortName?: string,
 	id: string,
 	description?: Array<string>,
 	icon: serverIcons,

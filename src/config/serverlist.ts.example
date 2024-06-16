@@ -17,6 +17,7 @@ export const serverList: Array<serverData> = [
 		}
 	}, {
 		name: 'テスト1サーバー',
+		shortName: 'テスト1',
 		id: 's1',
 		type: 'mc',
 		proxyId: 'proxy',

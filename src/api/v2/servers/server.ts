@@ -2,9 +2,9 @@ import express from 'express'
 import { RouteParameters } from 'express-serve-static-core'
 
 import { servers } from '../../../server'
-import { consoleRouter } from './console'
 import { MinecraftServer } from '../../../server/minecraft/main'
 import { MinecraftProxy } from '../../../server/minecraft/proxy'
+import { consoleRouter } from './console'
 
 //https://stackoverflow.com/questions/72395842/using-express-mergeparams-with-typescript
 export type WithServerIdParams<T extends string> = RouteParameters<':serverId'> & RouteParameters<T>
@@ -26,6 +26,7 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 			res.status(200).send({
 				id: server.id,
 				name: server.name,
+				shortName: server.shortName,
 				description: server.description,
 				icon: server.icon,
 				index: server.index,
@@ -42,6 +43,7 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 			res.status(200).send({
 				id: server.id,
 				name: server.name,
+				shortName: server.shortName,
 				description: server.description,
 				icon: server.icon,
 				index: server.index,
@@ -57,6 +59,7 @@ serverRouter.get<typeof rootPath, WithServerIdParams<typeof rootPath>>(rootPath,
 			res.status(200).send({
 				id: server.id,
 				name: server.name,
+				shortName: server.shortName,
 				description: server.description,
 				icon: server.icon,
 				index: server.index,
