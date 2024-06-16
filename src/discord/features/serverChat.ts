@@ -11,12 +11,6 @@ import { client } from '..'
 import { discordBotConfig } from '../../config/discord'
 import { servers } from '../../server'
 import {
-	diceCommandToMinimessage,
-	discordUserNameNormalizer,
-	minimessageNormalizer
-} from '../../util/minimessage'
-import { MinecraftServer } from '../../server/minecraft/main'
-import {
 	playerAdvancementDoneEvent,
 	playerChattedEvent,
 	playerConnectedEvent,
@@ -25,8 +19,14 @@ import {
 	playerMovedEvent,
 	serverHangedEvent
 } from '../../server/interfaces'
-import { translateFromAdvancementData, translateFromDeathMessage } from '../../util/minecraft'
+import { MinecraftServer } from '../../server/minecraft/main'
 import { japaneseNormalizer } from '../../util/japanese'
+import { translateFromAdvancementData, translateFromDeathMessage } from '../../util/minecraft'
+import {
+	diceCommandToMinimessage,
+	discordUserNameNormalizer,
+	minimessageNormalizer
+} from '../../util/minimessage'
 import { statusEmojis } from '../../util/server'
 
 const noticeChannel = client.channels.cache.get(discordBotConfig.noticeChannelId)
@@ -71,7 +71,6 @@ for (const server of Object.values(servers)) {
 		})
 		embed.setTitle(`${data.playerId}さんがサーバーに参加しました`)
 		embed.setColor(discordBotConfig.colors.join)
-		embed.setTimestamp(new Date(data.timestamp))
 		noticeChannel.send({
 			embeds: [embed]
 		})
@@ -89,7 +88,6 @@ for (const server of Object.values(servers)) {
 		})
 		embed.setTitle(`${data.playerId}さんがサーバーに移動しました`)
 		embed.setColor(discordBotConfig.colors.move)
-		embed.setTimestamp(new Date(data.timestamp))
 		noticeChannel.send({
 			embeds: [embed]
 		})
@@ -107,7 +105,6 @@ for (const server of Object.values(servers)) {
 		})
 		embed.setTitle(`${data.playerId}さんがサーバーから退出しました`)
 		embed.setColor(discordBotConfig.colors.leave)
-		embed.setTimestamp(new Date(data.timestamp))
 		noticeChannel.send({
 			embeds: [embed]
 		})
@@ -132,7 +129,6 @@ for (const server of Object.values(servers)) {
 		embed.setTitle(translateFromDeathMessage(data.reason))
 		embed.setDescription(`${data.reason}\n${deathSadMessage}`)
 		embed.setColor(discordBotConfig.colors.death as ColorResolvable)
-		embed.setTimestamp(new Date(data.timestamp))
 		noticeChannel.send({
 			embeds: [embed]
 		})
@@ -156,7 +152,6 @@ for (const server of Object.values(servers)) {
 		embed.setTitle(`${data.playerId}さんは${advancementTypes[data.advancement.type] ?? '進捗'} ${translatedData.name} を達成しました`)
 		embed.setDescription(`${translatedData.description}${data.advancement.type === 'CHALLENGE' ? '\nすごい！' : ''}`)
 		embed.setColor(data.advancement.type === 'CHALLENGE' ? discordBotConfig.colors.challengeAdvancement : discordBotConfig.colors.normalAdvancement)
-		embed.setTimestamp(new Date(data.timestamp))
 		noticeChannel.send({
 			embeds: [embed]
 		})
