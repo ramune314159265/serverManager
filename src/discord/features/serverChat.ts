@@ -196,7 +196,7 @@ client.on(Events.MessageCreate, async message => {
 		messageContents.push(minimessageNormalizer(message.content, message.guild))
 	}
 	if (message.attachments.size !== 0) {
-		messageContents.push(`${message.attachments.map(attachment => `<click:open_url:${attachment.url}><underlined><aqua>${attachment.name}</aqua></underlined></click>`).join(', ')}をアップロードしました`)
+		messageContents.push(`${message.attachments.map(attachment => `<click:open_url:${attachment.url}><underlined><aqua>${attachment.name}</aqua></underlined></click>`).join(', ')}がアップロードされました`)
 	}
 	if (message.stickers.size !== 0) {
 		messageContents.push(`スタンプ(${[...message.stickers.values()][0].name})を送信しました`)
