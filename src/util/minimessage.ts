@@ -1,7 +1,7 @@
-import { Guild, GuildMember } from 'discord.js'
+import { Guild, GuildMember, User } from 'discord.js'
+import { servers } from '../server'
 import { playerChattedEvent } from '../server/interfaces'
 import { evalDiceCommand, isDiceCommand } from './dice'
-import { servers } from '../server'
 
 export const markdownToMinimessage = (content: string): string => {
 	return content
@@ -43,8 +43,8 @@ export const minimessageNormalizer = (content: string, guild: (Guild | null)): s
 	return markdownToMinimessage(mentionsToMinimessage(URLToMinimessage(content), guild))
 }
 
-export const discordUserNameNormalizer = (member: (GuildMember | null)): string => {
-	return `<color:${member?.displayHexColor ?? 'white'}><hover:show_text:'@${member?.user?.username ?? '不明'}'>${member?.displayName ?? '不明'}</hover></color>`
+export const discordUserNameNormalizer = (member: (GuildMember | null), user?: (User | null)): string => {
+	return `<color:${member?.displayHexColor ?? 'white'}><hover:show_text:'@${member?.user?.username ?? user?.displayName ?? '不明'}'>${member?.displayName ?? user?.displayName ?? '不明'}</hover></color>`
 }
 
 export const minecraftUserNameNormalizer = (playerId: string, serverName: string): string => {

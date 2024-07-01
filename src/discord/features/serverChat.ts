@@ -205,6 +205,6 @@ client.on(Events.MessageCreate, async message => {
 		return
 	}
 	const repliedMessage = message.reference?.messageId ? await message.channel.messages.fetch(message.reference?.messageId) : null
-	const contentToSendMinecraft = `[<color:#5865F2>Discord</color> | ${discordUserNameNormalizer(message.member)}${repliedMessage ? `(${discordUserNameNormalizer(repliedMessage.member)}に返信)` : ''}] <reset>${messageContents.join('\n')}`
+	const contentToSendMinecraft = `[<color:#5865F2>Discord</color> | ${discordUserNameNormalizer(message.member, message.author)}${repliedMessage ? `(${discordUserNameNormalizer(repliedMessage.member, repliedMessage.author)}に返信)` : ''}] <reset>${messageContents.join('\n')}`
 	MinecraftServer.sendChatToAll(contentToSendMinecraft)
 })
