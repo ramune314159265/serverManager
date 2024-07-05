@@ -1,10 +1,12 @@
 import { WebSocketServer } from 'ws'
 
+import { serverConfig } from '../../config/server'
 import { servers } from '../../server'
 import { MinecraftServerBase } from '../../server/minecraft/index'
-import { serverConfig } from '../../config/server'
 import { MinecraftServer } from '../../server/minecraft/main'
 import { MinecraftProxy } from '../../server/minecraft/proxy'
+
+const receivedTimestamps = new Set<number>()
 
 export const minecraftWsServer = new WebSocketServer({
 	port: serverConfig.wsMcServerPort,
@@ -15,6 +17,10 @@ minecraftWsServer.on('connection', (wsConnection) => {
 	wsConnection.on('message', message => {
 		console.log(message.toString())
 		const data = JSON.parse(message.toString())
+
+		if (receivedTimestamps.has(data?.timestamp)) {
+			return
+		}
 		switch (data.type) {
 			case 'ws_connected':
 				(servers[data.serverId] as MinecraftServerBase).setWsConnection(wsConnection)
@@ -33,6 +39,10 @@ minecraftWsServer.on('connection', (wsConnection) => {
 				break
 			default:
 				break
+		}
+
+		if (data.timestamp) {
+			receivedTimestamps.add(data.timestamp)
 		}
 	})
 })

@@ -1,18 +1,31 @@
 import WebSocket from 'ws'
 
-import { Server } from '../server'
-import { serverData } from '../interfaces'
-import { Players } from './players'
 import { minecraftWsServer } from '../../websocket/minecraft'
+import { serverData } from '../interfaces'
+import { Server } from '../server'
+import { Players } from './players'
+
+const receivedTimestamps = new Set<number>()
 
 export class MinecraftServerBase extends Server {
 	static sendChatToAll(content: string) {
+		const timestamp = Date.now()
 		minecraftWsServer.clients.forEach(wsConnection => {
 			wsConnection.send(JSON.stringify({
 				type: 'send_chat',
-				content
+				content,
+				timestamp
 			}))
 		})
+		setTimeout(() => {
+			minecraftWsServer.clients.forEach(wsConnection => {
+				wsConnection.send(JSON.stringify({
+					type: 'send_chat',
+					content,
+					timestamp
+				}))
+			})
+		}, 3000)
 	}
 	players: Players
 	wsConnection?: WebSocket
@@ -26,7 +39,14 @@ export class MinecraftServerBase extends Server {
 	setWsConnection(connection: WebSocket) {
 		this.wsConnection = connection
 		connection.on('message', message => {
+			const data = JSON.parse(message.toString())
+			if (receivedTimestamps.has(data?.timestamp)) {
+				return
+			}
 			this.minecraftDataReceived(message.toString())
+			if (data.timestamp) {
+				receivedTimestamps.add(data.timestamp)
+			}
 		})
 	}
 	minecraftDataReceived(message: string) {

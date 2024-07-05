@@ -1,6 +1,6 @@
-import { minecraftProxyData, playerChattedEvent, playerConnectedEvent, playerDisconnectedEvent, playerMovedEvent } from '../interfaces'
 import { MinecraftServerBase } from '.'
 import { servers } from '..'
+import { minecraftProxyData, playerChattedEvent, playerConnectedEvent, playerDisconnectedEvent, playerMovedEvent } from '../interfaces'
 import { MinecraftServer } from './main'
 
 export class MinecraftProxy extends MinecraftServerBase {
@@ -13,10 +13,19 @@ export class MinecraftProxy extends MinecraftServerBase {
 		if (!this.wsConnection) {
 			throw new Error('server is offline')
 		}
+		const timestamp = Date.now()
 		this.wsConnection.send(JSON.stringify({
 			type: 'send_chat',
-			content
+			content,
+			timestamp
 		}))
+		setTimeout(() => {
+			this.wsConnection?.send?.(JSON.stringify({
+				type: 'send_chat',
+				content,
+				timestamp
+			}))
+		}, 3000)
 	}
 	minecraftDataReceived(message: string) {
 		super.minecraftDataReceived(message)
