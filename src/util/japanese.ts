@@ -4,7 +4,7 @@ import { playerChattedEvent } from '../server/interfaces'
 import { URLToMinimessage, minecraftUserNameNormalizer } from './minimessage'
 
 export const japaneseNormalizer = async (data: playerChattedEvent): Promise<{ contentToSendMinecraft: string; contentToSendDiscord: string }> => {
-	//ひらがな、カタカナが含まれていなかったら必要
+	//ひらがな、カタカナが含まれていたら不要
 	const isNeededToJapanese = !/(?:[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF61-\uFF9F])/.test(data.content)
 	if (!isNeededToJapanese) {
 		return new Promise((resolve) => {
