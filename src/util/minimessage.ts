@@ -15,7 +15,9 @@ export const markdownToMinimessage = (content: string): string => {
 
 export const URLToMinimessage = (content: string): string => {
 	return content
-		.replace(/(https?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig, "<click:open_url:'$1'><underlined><aqua>$1</aqua></underlined></click>")
+		.replace(/(https?:\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig, (match: string, p1: string) => {
+			return `<click:open_url:'${p1}'><underlined><aqua>${decodeURIComponent(p1)}</aqua></underlined></click>`
+		})
 }
 
 export const mentionsToMinimessage = (content: string, guild: (Guild | null)): string => {
