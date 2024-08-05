@@ -1,11 +1,10 @@
-import romajiConv from '@koozaki/romaji-conv'
 import { servers } from '../server'
 import { playerChattedEvent } from '../server/interfaces'
 import { URLToMinimessage, minecraftUserNameNormalizer } from './minimessage'
+import { convertToHiragana, isRomaji } from './romaji'
 
 export const japaneseNormalizer = async (data: playerChattedEvent): Promise<{ contentToSendMinecraft: string; contentToSendDiscord: string }> => {
-	//ひらがな、カタカナが含まれていたら不要
-	const isNeededToJapanese = !/(?:[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF61-\uFF9F])/.test(data.content)
+	const isNeededToJapanese = isRomaji(data.content)
 	if (!isNeededToJapanese) {
 		return new Promise((resolve) => {
 			resolve({
@@ -16,7 +15,7 @@ export const japaneseNormalizer = async (data: playerChattedEvent): Promise<{ co
 	}
 
 	try {
-		const toHiragana = romajiConv(data.content).toHiragana()
+		const toHiragana = convertToHiragana(data.content)
 		const IMEHandled = (await (await fetch(`https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${encodeURIComponent(toHiragana)}`)).json())
 			.map((i: string) => i[1][0])
 			.join('')

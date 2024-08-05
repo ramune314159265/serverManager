@@ -28,7 +28,6 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@koozaki/romaji-conv": "^2.0.27",
     "@types/express-serve-static-core": "^4.17.43",
     "bcdice": "^4.6.0",
     "cors": "^2.8.5",
@@ -38,6 +37,7 @@
     "express-ws": "^5.0.2",
     "patch-package": "^8.0.0",
     "throttled-queue": "^2.1.4",
+    "wanakana": "^5.3.1",
     "websocket": "^1.0.34",
     "ws": "^8.16.0"
   }
