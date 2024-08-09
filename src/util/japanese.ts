@@ -19,7 +19,7 @@ export const japaneseNormalizer = async (data: playerChattedEvent): Promise<{ co
 		const IMEHandled = (await (await fetch(`https://www.google.com/transliterate?langpair=ja-Hira|ja&text=${encodeURIComponent(toHiragana)}`)).json())
 			.map((i: string) => i[1][0])
 			.join('')
-		const isOmitted = (IMEHandled === '') || (IMEHandled === toHiragana)
+		const isOmitted = (IMEHandled === '') || (IMEHandled === data.content)
 		return {
 			contentToSendMinecraft: `[<green>Minecraft</green> | ${minecraftUserNameNormalizer(data.playerId, servers[data.serverId].shortName)}] ${URLToMinimessage(data.content)} ${isOmitted ? '' : `<reset><gold>(${URLToMinimessage(IMEHandled)})</gold>`}`,
 			contentToSendDiscord: `[Minecraft | ${data.playerId}@${servers[data.serverId].name}] ${data.content} ${isOmitted ? '' : `(${IMEHandled})`}`

@@ -2,8 +2,8 @@ import * as wanakana from 'wanakana'
 
 export const convertToHiragana = (content: string): string => {
 	return wanakana.toHiragana(content, {
-		IMEMode: true,
 		customKanaMapping: {
+			nn: 'ん',
 			kk: 'っ',
 			ss: 'っ',
 			tt: 'っ',
