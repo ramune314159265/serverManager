@@ -1,20 +1,23 @@
 import WebSocket from 'ws'
 
+import { randomUUIDv4 } from '../../util/uuid'
 import { minecraftWsServer } from '../../websocket/minecraft'
 import { serverData } from '../interfaces'
 import { Server } from '../server'
 import { Players } from './players'
 
-const receivedTimestamps = new Set<number>()
+const receivedUuid = new Set<string>()
 
 export class MinecraftServerBase extends Server {
 	static sendChatToAll(content: string) {
 		const timestamp = Date.now()
+		const uuid = randomUUIDv4()
 		minecraftWsServer.clients.forEach(wsConnection => {
 			wsConnection.send(JSON.stringify({
 				type: 'send_chat',
 				content,
-				timestamp
+				timestamp,
+				uuid
 			}))
 		})
 		setTimeout(() => {
@@ -22,7 +25,8 @@ export class MinecraftServerBase extends Server {
 				wsConnection.send(JSON.stringify({
 					type: 'send_chat',
 					content,
-					timestamp
+					timestamp,
+					uuid
 				}))
 			})
 		}, 3000)
@@ -40,12 +44,13 @@ export class MinecraftServerBase extends Server {
 		this.wsConnection = connection
 		connection.on('message', message => {
 			const data = JSON.parse(message.toString())
-			if (receivedTimestamps.has(data?.timestamp)) {
+			if (receivedUuid.has(data?.uuid)) {
 				return
 			}
 			this.minecraftDataReceived(message.toString())
-			if (data.timestamp) {
-				receivedTimestamps.add(data.timestamp)
+
+			if (data.uuid) {
+				receivedUuid.add(data.uuid)
 			}
 		})
 	}

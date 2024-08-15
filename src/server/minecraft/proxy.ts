@@ -1,5 +1,6 @@
 import { MinecraftServerBase } from '.'
 import { servers } from '..'
+import { randomUUIDv4 } from '../../util/uuid'
 import { minecraftProxyData, playerChattedEvent, playerConnectedEvent, playerDisconnectedEvent, playerMovedEvent } from '../interfaces'
 import { MinecraftServer } from './main'
 
@@ -14,16 +15,19 @@ export class MinecraftProxy extends MinecraftServerBase {
 			throw new Error('server is offline')
 		}
 		const timestamp = Date.now()
+		const uuid = randomUUIDv4()
 		this.wsConnection.send(JSON.stringify({
 			type: 'send_chat',
 			content,
-			timestamp
+			timestamp,
+			uuid
 		}))
 		setTimeout(() => {
 			this.wsConnection?.send?.(JSON.stringify({
 				type: 'send_chat',
 				content,
-				timestamp
+				timestamp,
+				uuid
 			}))
 		}, 3000)
 	}

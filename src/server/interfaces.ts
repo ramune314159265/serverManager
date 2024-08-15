@@ -61,7 +61,8 @@ export interface playerConnectedEvent {
 	playerId: string,
 	joinedServerId: string,
 	proxyId: string,
-	timestamp: number
+	timestamp: number,
+	uuid: string
 }
 
 export interface playerMovedEvent {
@@ -69,20 +70,23 @@ export interface playerMovedEvent {
 	joinedServerId: string,
 	previousJoinedServerId: string,
 	proxyId: string,
-	timestamp: number
+	timestamp: number,
+	uuid: string
 }
 
 export interface playerDisconnectedEvent {
 	playerId: string,
 	previousJoinedServerId: string,
 	proxyId: string,
-	timestamp: number
+	timestamp: number,
+	uuid: string
 }
 
 export interface playerDeadEvent {
 	reason: string,
 	playerId: string,
-	timestamp: number
+	timestamp: number,
+	uuid: string
 }
 
 export interface advancementData {
@@ -90,13 +94,15 @@ export interface advancementData {
 	description: string,
 	name: string,
 	key: string,
-	namespace: string
+	namespace: string,
+	uuid: string
 }
 
 export interface playerAdvancementDoneEvent {
 	playerId: string,
 	advancement: advancementData,
-	timestamp: number
+	timestamp: number,
+	uuid: string
 }
 
 export interface playerChattedEvent {
@@ -104,7 +110,8 @@ export interface playerChattedEvent {
 	proxyId: string,
 	serverId: string,
 	content: string,
-	timestamp: number
+	timestamp: number,
+	uuid: string
 }
 
 export interface serverHangedEvent {
@@ -116,5 +123,6 @@ export interface serverHangedEvent {
 export interface serverSentInfo {
 	tps: number,
 	lastTickTimestamp: number,
-	timestamp: number
+	timestamp: number,
+	uuid: string
 }
